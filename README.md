@@ -5,3 +5,5 @@
 
 ## 專案架構 （暫定）
 - 以stardew為主體 並將plane_game作為子遊戲附在stardew裡面
+
+## 想法：
