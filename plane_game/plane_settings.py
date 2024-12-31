@@ -1,5 +1,6 @@
 import pygame
 import random
+
 fps = 60
 length = 900
 
@@ -13,3 +14,10 @@ rocket_number = 10
 
 enemy_bullets = pygame.sprite.Group()  # 公用的敵人子彈群組
 all_sprites = pygame.sprite.Group()  # 公用的所有精靈群組
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+screen_width, screen_height = 1371, 900
+
+# font = pygame.font.Font("path_to_font.ttf", 74)
