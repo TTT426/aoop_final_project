@@ -14,8 +14,8 @@ class Level:
         self.display_surface = pygame.display.get_surface()
 
         #sprite groups
-        #self.all_sprites = pygame.sprite.Group()
         self.all_sprites = CameraGroup()
+        self.collision_sprites = pygame.sprite.Group()
 
         self.setup()
         self.overlay = Overlay(self.player)
@@ -48,7 +48,7 @@ class Level:
             Generic(
                 pos = (x * TILE_SIZE, y * TILE_SIZE),
                 surf = surf,
-                groups=self.all_sprites,
+                groups=[self.all_sprites, self.collision_sprites],
                 z = LAYERS['main']
             )
 
@@ -66,7 +66,7 @@ class Level:
             Tree(
                 pos = (obj.x, obj.y),
                 surf = obj.image,
-                groups = self.all_sprites,
+                groups = [self.all_sprites, self.collision_sprites],
                 name = obj.name
                 
             )
@@ -76,7 +76,7 @@ class Level:
             WildFlower(
                 pos = (obj.x, obj.y),
                 surf = obj.image,
-                groups = self.all_sprites
+                groups = [self.all_sprites, self.collision_sprites]
             )
 
         Generic(
@@ -85,7 +85,19 @@ class Level:
             groups=self.all_sprites,
             z = LAYERS['ground']
         )
-        self.player = Player((640, 360), self.all_sprites)
+
+        #collision tiles
+        for x,y, surf in tmx_data.get_layer_by_name('Collision').tiles():
+            Generic(
+                pos = (x * TILE_SIZE, y * TILE_SIZE),
+                surf = pygame.Surface((TILE_SIZE, TILE_SIZE)),
+                groups = self.collision_sprites,
+            )
+
+        #Player
+        for obj in tmx_data.get_layer_by_name('Player'):
+            if obj.name == 'Start':
+                self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
 
     def run(self, dt):
         self.display_surface.fill('black')
