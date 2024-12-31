@@ -2,7 +2,9 @@ import pygame, sys
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic
+from sprites import Generic, Water, WildFlower, Tree
+from pytmx.util_pygame import load_pygame
+from support import *
 
 
 class Level:
@@ -19,7 +21,64 @@ class Level:
         self.overlay = Overlay(self.player)
 
     def setup(self):
-    
+        tmx_data = load_pygame('../data/map.tmx')
+
+        #house 
+        for layer in ['HouseFloor', 'HouseFurnitureBottom']:
+            for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+                Generic(
+                    pos = (x * TILE_SIZE, y * TILE_SIZE),
+                    surf = surf,
+                    groups=self.all_sprites,
+                    z = LAYERS['house bottom']
+                )
+
+        for layer in ['HouseWalls', 'HouseFurnitureTop']:
+            for x, y, surf in tmx_data.get_layer_by_name(layer).tiles():
+                Generic(
+                    pos = (x * TILE_SIZE, y * TILE_SIZE),
+                    surf = surf,
+                    groups=self.all_sprites,
+                    z = LAYERS['main']
+                )
+
+        #Fence
+        
+        for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
+            Generic(
+                pos = (x * TILE_SIZE, y * TILE_SIZE),
+                surf = surf,
+                groups=self.all_sprites,
+                z = LAYERS['main']
+            )
+
+        #water
+        water_frames = import_folder('../graphics/water')
+        for x, y, surf in tmx_data.get_layer_by_name('Water').tiles():
+            Water(
+                pos = (x * TILE_SIZE, y * TILE_SIZE),
+                frames = water_frames,
+                groups=self.all_sprites
+            )
+
+        #trees
+        for obj in tmx_data.get_layer_by_name('Trees'):
+            Tree(
+                pos = (obj.x, obj.y),
+                surf = obj.image,
+                groups = self.all_sprites,
+                name = obj.name
+                
+            )
+
+        #wildflowers
+        for obj in tmx_data.get_layer_by_name('Decoration'):
+            WildFlower(
+                pos = (obj.x, obj.y),
+                surf = obj.image,
+                groups = self.all_sprites
+            )
+
         Generic(
             pos = (0,0),
             surf = pygame.image.load('../graphics/world/ground.png').convert_alpha(),
@@ -47,7 +106,7 @@ class CameraGroup(pygame.sprite.Group):
         self.offset.y = player.rect.centery - SCREEN_HEIGHT /2
 
         for layer in LAYERS.values():
-            for sprite in self.sprites():
+            for sprite in sorted(self.sprites(),key = lambda sprite:sprite.rect.centery):
                 if sprite.z == layer:
                     offset_rect = sprite.rect.copy()
                     offset_rect.center -= self.offset
