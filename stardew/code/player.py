@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         #general setup
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_rect(center = pos)
+        self.z = LAYERS['main'] 
 
         #moverment attributes
         self.direction = pygame.math.Vector2(0, 0)
@@ -96,7 +97,6 @@ class Player(pygame.sprite.Sprite):
                 self.timers['tool use'].activate()
                 self.direction = pygame.math.Vector2(0, 0)
                 self.frame_index = 0
-                print('use tool')
             
             #tool switch
             if keys[pygame.K_q] and not self.timers['tool switch'].active:
@@ -105,14 +105,12 @@ class Player(pygame.sprite.Sprite):
                 if self.tools_index >= len(self.tools):
                     self.tools_index = 0
                 self.selected_tool = self.tools[self.tools_index]
-                print(self.selected_tool)
-            
+                
             #seed use 
             if keys[pygame.K_LCTRL]:
                 self.timers['seed use'].activate()
                 self.direction = pygame.math.Vector2(0, 0)
                 self.frame_index = 0
-                print('use seed')
 
             #seed switch
             if keys[pygame.K_e] and not self.timers['seed switch'].active:
@@ -121,7 +119,6 @@ class Player(pygame.sprite.Sprite):
                 if self.seeds_index >= len(self.seeds):
                     self.seeds_index = 0
                 self.selected_seed = self.seeds[self.seeds_index]
-                print(self.selected_seed)
             
 
     def get_status(self):
