@@ -52,10 +52,40 @@ class Tree(Generic):
             groups = groups
         )
 
+        #tree attributes
+        self.health = 5
+        self.alive = True
+        stump_path = f'../graphics/stumps/{"small" if name == "Small" else "large"}.png'
+        self.stump_surf = pygame.image.load(stump_path).convert_alpha()
+        self.invul_timer = Timer(200)
+
+
+        #apple
         self.apples_surf = pygame.image.load('../graphics/fruit/apple.png')
         self.apple_pos = APPLE_POS[name]
-        self.apple_sprities = pygame.sprite.Group()
+        self.apple_sprites = pygame.sprite.Group()
         self.create_fruit()
+
+    def damage(self):
+
+        #damaging tree
+        self.health -= 1
+
+        #remove an apple
+        if len(self.apple_sprites.sprites()) > 0:
+            random_apple = choice(self.apple_sprites.sprites())
+            random_apple.kill()
+
+    def check_death(self):
+        if self.health <= 0:
+            self.image = self.stump_surf
+            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+            self.hitbox = self.rect.copy().inflate((-10, -self.rect.height*0.6)) 
+
+    def update(self, dt):
+        if self.alive == True:
+            self.check_death()
+    
     ## 改成uniform random_variable?
     def create_fruit(self):
         for pos in self.apple_pos:
@@ -65,5 +95,5 @@ class Tree(Generic):
                 Generic(
                     pos = (x, y), 
                     surf = self.apples_surf, 
-                    groups = [self.apple_sprities, self.groups()[0]],
+                    groups = [self.apple_sprites, self.groups()[0]],
                     z = LAYERS['fruit']) 
