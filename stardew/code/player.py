@@ -7,7 +7,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites):
+    def __init__(self, pos, group, collision_sprites, tree_sprites):
         super().__init__(group)
 
         self.import_assets()
@@ -46,10 +46,23 @@ class Player(pygame.sprite.Sprite):
         self.seeds_index = 0
         self.selected_seed = self.seeds[self.seeds_index]
 
-    def use_tool(self):
-        #print(self.selected_tool)
-        pass
+        #interaction
+        self.tree_sprites = tree_sprites
 
+    def use_tool(self):
+        if self.selected_tool == 'hoe':
+            pass
+
+        if self.selected_tool == 'axe':
+            pass
+
+
+        if self.selected_tool == 'water':
+            pass
+
+    def get_target_pos(self):
+        self.target_pos = self.rect.center + PLAYER_TOOL_OFFSET[self.status.split('_')[0]]
+    
     def use_seed(self):
         pass
 
@@ -179,8 +192,10 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.input()
-        self.move(dt)
         self.get_status()
         self.update_timers()
+        self.get_target_pos()
+
+        self.move(dt)
         self.animate(dt)
         

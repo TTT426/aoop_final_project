@@ -1,6 +1,7 @@
 import pygame
 from settings import *
-from random import randint
+from random import randint, choice
+from timer import Timer
 
 class Generic(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups, z = LAYERS['main']):
