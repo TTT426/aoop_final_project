@@ -19,5 +19,3 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
 screen_width, screen_height = 1371, 900
-
-# font = pygame.font.Font("path_to_font.ttf", 74)

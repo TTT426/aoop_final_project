@@ -5,6 +5,7 @@ from bullet import Bullet
 
 # 遊戲開始
 game_state = "start"
+coin = 0
 # 遊戲暫停
 paused = False
 
@@ -133,6 +134,12 @@ class Enemy(pygame.sprite.Sprite):
 enemy = Enemy(enemy_image, player)
 all_sprites.add(enemy)
 
+
+def draw_coin(surface, coin):
+    font = pygame.font.Font(None, 36)
+    coin_text = font.render(f"coin: {coin}", True, (255, 255, 255))  # 白色文字
+    surface.blit(coin_text, (10, 10))  # 在左上角顯示分數
+
 #  主遊戲循環
 running = True
 while running:
@@ -182,6 +189,7 @@ while running:
         # 子彈與岩石的碰撞檢測
         bullet_hits = pygame.sprite.groupcollide(rocks, bullets, True, True)
         for hit in bullet_hits:
+            coin += 1
             new_rock = Rock(rock_image)
             all_sprites.add(new_rock)
             rocks.add(new_rock)
@@ -191,6 +199,8 @@ while running:
         for a in attack:
             enemy.take_damage(1)
             a.kill()
+            if enemy.health <= 0:
+                coin += 10  # 打倒敵人加10分
         
         # 更新背景位置
         bg_y1 += down_offset  
@@ -210,11 +220,11 @@ while running:
         if not paused:
             all_sprites.update()
             all_sprites.draw(screen)  # 繪製所有精靈 
-            # 更新和繪製玩家
             player.update()
             player.draw_health_bar(screen)
             enemy.update()
             enemy.draw_health_bar(screen)
+            draw_coin(screen, coin)
             pygame.display.flip()  # 更新畫面
         else:
             # 顯示暫停畫面
@@ -224,3 +234,41 @@ while running:
             screen.blit(pause_text, (screen_width // 2 - pause_text.get_width() // 2, screen_height // 2))
             # 刷新屏幕
             pygame.display.flip()
+
+        if player.health <= 0:
+            while True:
+                # 顯示暫停畫面
+                lose_font = pygame.font.Font(None, 74)
+                # 顯示暫停文字
+                lose_text = lose_font.render("You are destoryed!", True, WHITE)
+                restart_text = small_font.render("Press ESC to Quit", True, WHITE)
+                screen.blit(lose_text, (screen_width // 2 - lose_text.get_width() // 2, screen_height // 2))
+                screen.blit(restart_text, (screen_width // 2 - restart_text.get_width() // 2, screen_height // 2 + 50))
+                
+                # 刷新屏幕
+                pygame.display.flip()
+
+                # 事件處理
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                        running = False
+                        pygame.quit()
+                        exit()  # 完全退出遊戲
+        elif enemy.health <= 0:
+            while True:
+                # 顯示暫停畫面
+                win_font = pygame.font.Font(None, 74)
+                restart_text = small_font.render("Press ESC to Quit", True, WHITE)
+                win_text = win_font.render("You Win!", True, WHITE)
+                screen.blit(win_text, (screen_width // 2 - win_text.get_width() // 2, screen_height // 2))
+                screen.blit(restart_text, (screen_width // 2 - restart_text.get_width() // 2, screen_height // 2 + 50))
+                # 刷新屏幕
+                pygame.display.flip()
+
+                # 事件處理
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                        running = False
+                        pygame.quit()
+                        exit()  # 完全退出遊戲
+    print(game_state)
