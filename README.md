@@ -2,6 +2,8 @@
 更新:
 1. plane_game 的大致架構
 2. stardew 的大致架構
+3. 以stardew為遊戲主體 可以和plane_game做切換
+
 ## stardew running
 run main.py in stardew/code
 ## 待完成
