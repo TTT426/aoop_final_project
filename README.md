@@ -10,6 +10,9 @@ plane_game:
 2. 進階美術渲染（如爆炸等）
 3. 計分系統
 4. 技能？
+
+debug :
+1. stardew moving when cutting trees
 ## 專案架構 （暫定）
 - 以stardew為主體 並將plane_game作為子遊戲附在stardew裡面
 
