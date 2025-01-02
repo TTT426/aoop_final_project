@@ -1,5 +1,6 @@
 # AOOP final project
 更新:
+gitactions錯誤很正常 因為test的RPG遊戲是半成品 有些東西沒抓到十分合理
 1. plane_game 的大致架構
 2. stardew 的大致架構
 3. 以stardew為遊戲主體 可以和plane_game做切換
