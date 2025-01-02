@@ -8,11 +8,9 @@
 run main.py in stardew/code
 ## 待完成
 plane_game:
-1. 玩家飛機跟敵人的碰撞處理
-2. 進階美術渲染（如爆炸等）
-3. 計分系統
-4. 技能？
-
+1. 進階美術渲染（如爆炸等）
+2. 技能？
+3. 開始遊戲錢加個 3, 2, 1的特效
 debug :
 1. stardew moving when cutting trees
 ## 專案架構 （暫定）
