@@ -10,12 +10,15 @@ def start_plane_game():
     # 遊戲暫停
     paused = False
 
+    # 字體設定
+    font = pygame.font.Font(None, 74)
+    small_font = pygame.font.Font(None, 36)
     # 初始化背景位置
     bg_y1 = 0
     bg_y2 = -length  # 假設背景圖片高度為 `length`
 
     # 初始化 pygame
-    pygame.init()
+    # pygame.init()
     screen = pygame.display.set_mode((1371, length))
     pygame.display.set_caption("Plane shoot")
     clock = pygame.time.Clock() 
@@ -25,9 +28,11 @@ def start_plane_game():
     background = pygame.transform.scale(background, (1371, length))  # 確保背景大小與視窗一致
     rock_image = pygame.image.load("plane_game/img/rock.png").convert_alpha()
     Master_image = pygame.image.load("plane_game/img/Master.png").convert_alpha()
+    Master_image = pygame.transform.scale(Master_image, (99, 75))
     bullet_image = pygame.image.load("plane_game/img/bullet3.png").convert_alpha()
-    enemy_image = pygame.image.load("plane_game/img/Master.png").convert_alpha()
-
+    enemy_image = pygame.image.load("plane_game/img/ghost.png").convert_alpha()
+    enemy_image = pygame.transform.scale(enemy_image, (99, 75))
+    
     all_sprites = pygame.sprite.Group()
     rocks = pygame.sprite.Group()
     
@@ -154,7 +159,7 @@ def start_plane_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT or Master2.health <= 0 or enemy.health <= 0:
                 running = False
-                return "back_to_main"  # 通知主遊戲返回
+                return ("back_to_main", coin)
             elif event.type == pygame.KEYDOWN:
                 if game_state == "start" and event.key == pygame.K_RETURN:
                     game_state = "playing"  # 切換到遊戲進行狀態
@@ -170,12 +175,35 @@ def start_plane_game():
             # 清空畫面
             screen.fill(BLACK)
             # 開始畫面
-            font = pygame.font.Font(None, 74)
-            small_font = pygame.font.Font(None, 36)
-            title_text = font.render("Welcome to the Game", True, WHITE)
-            instruction_text = small_font.render("Press ENTER to start", True, WHITE)
-            screen.blit(title_text, (screen_width // 2 - title_text.get_width() // 2, 200))
-            screen.blit(instruction_text, (screen_width // 2 - instruction_text.get_width() // 2, 300))  
+        
+            # 標題文字
+            title_text = font.render("Welcome to the Game!", True, WHITE)
+
+            # 說明文字（多行）
+            instructions = [
+            "Rules:",
+            "Use arrow keys to move the character",
+            "Press SPACEBAR to shoot apples (bullets)",
+            "Press P to pause the game",
+            "Earn 1 coin for destroying a rock",
+            "Earn 10 coins for defeating the Boss",
+            "If you die, your coins will be halved",
+            "Try to earn as much as you can under the Boss's wrath!",
+                "Press ENTER to start your battle!" 
+            ]
+
+            # 繪製標題
+            screen.blit(title_text, (screen_width // 2 - title_text.get_width() // 2, 50))
+            # 繪製多行文字
+            start_y = 150  # 說明文字起始的 y 座標
+            line_spacing = 40  # 每行文字的間距
+            for i, line in enumerate(instructions):
+                text_surface = small_font.render(line, True, WHITE)
+                screen.blit(
+                    text_surface, 
+                    (screen_width // 2 - text_surface.get_width() // 2, start_y + i * line_spacing)
+                )
+            
             # 刷新屏幕
             pygame.display.flip()
         elif game_state == "playing":
@@ -207,6 +235,12 @@ def start_plane_game():
                 if enemy.health <= 0:
                     coin += 10  # 打倒敵人加10分
             
+            # 玩家跟敵人
+            if pygame.sprite.collide_rect(Master2, enemy):
+                Master2.take_damage(1)
+                if Master2.health <= 0:
+                    Master2.kill() 
+
             # 更新背景位置
             bg_y1 += down_offset  
             bg_y2 += down_offset  
@@ -246,7 +280,7 @@ def start_plane_game():
                     lose_font = pygame.font.Font(None, 74)
                     # 顯示暫停文字
                     lose_text = lose_font.render("You are destoryed!", True, WHITE)
-                    restart_text = small_font.render("Press ESC to Quit", True, WHITE)
+                    restart_text = small_font.render("Press ESC to Return the main game", True, WHITE)
                     screen.blit(lose_text, (screen_width // 2 - lose_text.get_width() // 2, screen_height // 2))
                     screen.blit(restart_text, (screen_width // 2 - restart_text.get_width() // 2, screen_height // 2 + 50))
                     
@@ -256,13 +290,13 @@ def start_plane_game():
                     # 事件處理
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                            return "back_to_main"
+                            return ("back_to_main", coin)
                             
             elif enemy.health <= 0:
                 while True:
                     # 顯示暫停畫面
                     win_font = pygame.font.Font(None, 74)
-                    restart_text = small_font.render("Press ESC to Quit", True, WHITE)
+                    restart_text = small_font.render("Press ESC to Return the main game", True, WHITE)
                     win_text = win_font.render("You Win!", True, WHITE)
                     screen.blit(win_text, (screen_width // 2 - win_text.get_width() // 2, screen_height // 2))
                     screen.blit(restart_text, (screen_width // 2 - restart_text.get_width() // 2, screen_height // 2 + 50))
@@ -272,6 +306,6 @@ def start_plane_game():
                     # 事件處理
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                            return "back_to_main"
+                            return ("back_to_main", coin)
     return "back_to_main"  # 結束子遊戲時返回主遊戲
 

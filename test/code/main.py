@@ -36,9 +36,8 @@ class Game:
         pygame.display.update()
 
     def plane_game(self):
-        start_plane_game()  # 執行子遊戲
-        print(start_plane_game)
-        print("Returning to Main Game")
+        result, coin_value = start_plane_game()  # 執行子遊戲
+        print("Returning to Main Game with coin =", coin_value)
         self.state = "main_game"  # 子遊戲結束後返回主遊戲
 
 
