@@ -7,7 +7,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites):
+    def __init__(self, pos, group, collision_sprites, tree_sprites, interation):
         super().__init__(group)
 
         self.import_assets()
@@ -56,6 +56,8 @@ class Player(pygame.sprite.Sprite):
 
         #interaction
         self.tree_sprites = tree_sprites
+        self.interation = interation
+        self.sleep = False
 
     def use_tool(self):
         if self.selected_tool == 'hoe':
@@ -98,7 +100,7 @@ class Player(pygame.sprite.Sprite):
     def input(self):
         keys = pygame.key.get_pressed()
 
-        if not self.timers['tool use'].active:
+        if not self.timers['tool use'].active and not self.sleep:
 
             #movement
             if keys[pygame.K_UP]:
@@ -146,6 +148,15 @@ class Player(pygame.sprite.Sprite):
                 if self.seeds_index >= len(self.seeds):
                     self.seeds_index = 0
                 self.selected_seed = self.seeds[self.seeds_index]
+
+            if keys[pygame.K_RETURN]:
+                collided_interation_sprite = pygame.sprite.spritecollide(self, self.interation, False)
+                if collided_interation_sprite:
+                    if collided_interation_sprite[0].name == 'Trader':
+                        pass
+                    else:
+                        self.status = 'left_idle'
+                        self.sleep = True
             
     def get_status(self):
 
@@ -198,7 +209,6 @@ class Player(pygame.sprite.Sprite):
                             self.hitbox.top = sprite.hitbox.bottom
                         self.rect.centery = self.hitbox.centery
                         self.pos.y = self.hitbox.centery
-
 
     def update(self, dt):
         self.input()
