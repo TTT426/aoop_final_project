@@ -49,7 +49,6 @@ class Level:
                 )
 
         #Fence
-        
         for x, y, surf in tmx_data.get_layer_by_name('Fence').tiles():
             Generic(
                 pos = (x * TILE_SIZE, y * TILE_SIZE),

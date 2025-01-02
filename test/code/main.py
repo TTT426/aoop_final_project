@@ -38,6 +38,7 @@ class Game:
     def plane_game(self):
         result, coin_value = start_plane_game()  # 執行子遊戲
         print("Returning to Main Game with coin =", coin_value)
+        pygame.display.set_caption('NYCU VALLEY')
         self.state = "main_game"  # 子遊戲結束後返回主遊戲
 
 

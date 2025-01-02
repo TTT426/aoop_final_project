@@ -1,5 +1,5 @@
 from plane_settings import *
-from player import Player
+from master import Master
 from rock import Rock
 from bullet import Bullet
 
@@ -19,16 +19,16 @@ clock = pygame.time.Clock()
 background = pygame.image.load("plane_game/img/background.png").convert()
 background = pygame.transform.scale(background, (1371, length))  # 確保背景大小與視窗一致
 rock_image = pygame.image.load("plane_game/img/rock.png").convert_alpha()
-player_image = pygame.image.load("plane_game/img/player.png").convert_alpha()
+Master_image = pygame.image.load("plane_game/img/Master.png").convert_alpha()
 bullet_image = pygame.image.load("plane_game/img/bullet3.png").convert_alpha()
-enemy_image = pygame.image.load("plane_game/img/player.png").convert_alpha()
+enemy_image = pygame.image.load("plane_game/img/Master.png").convert_alpha()
 
 all_sprites = pygame.sprite.Group()
 rocks = pygame.sprite.Group()
  
 # 建立玩家物件
-player = Player(player_image)
-all_sprites.add(player)
+Master2 = Master(Master_image)
+all_sprites.add(Master2)
 # 建立石頭物件
 for _ in range(rocket_number):  # 生成 8 顆岩石
     rock = Rock(rock_image)
@@ -39,7 +39,7 @@ for _ in range(rocket_number):  # 生成 8 顆岩石
 bullets = pygame.sprite.Group()
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image, player):
+    def __init__(self, image, Master):
         super(Enemy, self).__init__()
         self.image = image
         self.rect = self.image.get_rect()
@@ -47,7 +47,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = random.randint(0, 500)
         self.speedx = random.uniform(-3, 3)  # 初始化速度
         self.speedy = random.uniform(-3, 3)  # 初始化速度
-        self.player = player
+        self.Master = Master
         self.last_speed_update = pygame.time.get_ticks()  # 上次更新速度的時間
         self.last_shoot_time = pygame.time.get_ticks()
         self.health = 5  # 初始血量設為 5 格
@@ -90,8 +90,8 @@ class Enemy(pygame.sprite.Sprite):
         
     def shoot(self):
         direction = pygame.math.Vector2(
-            self.player.rect.centerx - self.rect.centerx,
-            self.player.rect.centery - self.rect.centery
+            self.Master.rect.centerx - self.rect.centerx,
+            self.Master.rect.centery - self.rect.centery
         ).normalize()
         bullet = Bullet(
             x=self.rect.centerx,
@@ -126,12 +126,12 @@ class Enemy(pygame.sprite.Sprite):
             self.last_hit_time = now
             if self.health <= 0:
                 self.health = 0
-                print("Player is dead!")
+                print("Master is dead!")
                 self.kill()
             # 啟動無敵狀態
             self.invincible = True
 
-enemy = Enemy(enemy_image, player)
+enemy = Enemy(enemy_image, Master2)
 all_sprites.add(enemy)
 
 
@@ -148,14 +148,14 @@ while running:
     # 事件處理邏輯
     for event in pygame.event.get():
         if enemy.health == 0: print("win!")
-        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == 27) or player.health <= 0 or enemy.health <= 0:
+        if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == 27) or Master2.health <= 0 or enemy.health <= 0:
             running = False
         elif event.type == pygame.KEYDOWN:
             if game_state == "start" and event.key == pygame.K_RETURN:
                 game_state = "playing"  # 切換到遊戲進行狀態
             if event.key == 32:
                 # 發射子彈
-                bullet = Bullet(player.rect.centerx, player.rect.top, speedy=-10, image=bullet_image) 
+                bullet = Bullet(Master2.rect.centerx, Master2.rect.top, speedy=-10, image=bullet_image) 
                 all_sprites.add(bullet)
                 bullets.add(bullet)
             if event.key == pygame.K_p and game_state == "playing":  # 按下 P 鍵切換暫停狀態
@@ -173,17 +173,21 @@ while running:
         screen.blit(instruction_text, (screen_width // 2 - instruction_text.get_width() // 2, 300))  
         # 刷新屏幕
         pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                running = False
+        return "back_to_main"  # 通知主遊戲返回
     elif game_state == "playing":
         # 玩家與岩石的碰撞檢測
-        hits = pygame.sprite.spritecollide(player, rocks, False)
+        hits = pygame.sprite.spritecollide(Master2, rocks, False)
         for hit in hits:
-            player.take_damage(2)  # 每次碰撞減少 1 格血
+            Master2.take_damage(2)  # 每次碰撞減少 1 格血
             hit.kill()  # 移除與玩家碰撞的石頭
 
         # 玩家與敵人子彈
-        bullet_hits = pygame.sprite.spritecollide(player, enemy_bullets, True)
+        bullet_hits = pygame.sprite.spritecollide(Master2, enemy_bullets, True)
         for bullet in bullet_hits:
-            player.take_damage(1)  # 子彈擊中也減少 1 格血
+            Master2.take_damage(1)  # 子彈擊中也減少 1 格血
             bullet.kill()
         
         # 子彈與岩石的碰撞檢測
@@ -220,8 +224,8 @@ while running:
         if not paused:
             all_sprites.update()
             all_sprites.draw(screen)  # 繪製所有精靈 
-            player.update()
-            player.draw_health_bar(screen)
+            Master2.update()
+            Master2.draw_health_bar(screen)
             enemy.update()
             enemy.draw_health_bar(screen)
             draw_coin(screen, coin)
@@ -235,7 +239,7 @@ while running:
             # 刷新屏幕
             pygame.display.flip()
 
-        if player.health <= 0:
+        if Master2.health <= 0:
             while True:
                 # 顯示暫停畫面
                 lose_font = pygame.font.Font(None, 74)
