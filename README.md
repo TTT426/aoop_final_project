@@ -14,6 +14,7 @@ plane_game:
 3. 開始遊戲錢加個 3, 2, 1的特效
 debug :
 1. stardew moving when cutting trees
+2. stardew not watering when the plant grows in the raining day
 ## 專案架構 （暫定）
 - 以stardew為主體 並將plane_game作為子遊戲附在stardew裡面
 
