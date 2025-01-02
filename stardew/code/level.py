@@ -68,9 +68,9 @@ class Level:
                 pos = (obj.x, obj.y),
                 surf = obj.image,
                 groups = [self.all_sprites, self.collision_sprites, self.tree_sprites],
+                all_sprites = self.all_sprites,
                 name = obj.name,
-                all_sprites = self.all_sprites
-                
+                player_add = self.player_add
             )
 
         #wildflowers
@@ -106,6 +106,10 @@ class Level:
                     tree_sprites = self.tree_sprites
                     )
 
+    def player_add(self, item):
+
+        self.player.item_inventory[item] += 1
+
     def run(self, dt):
         self.display_surface.fill('black')
         #self.all_sprites.draw(self.display_surface)
@@ -113,7 +117,7 @@ class Level:
         self.all_sprites.update(dt)
 
         self.overlay.display()
-
+        
 class CameraGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
