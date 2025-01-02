@@ -68,7 +68,8 @@ class Level:
                 pos = (obj.x, obj.y),
                 surf = obj.image,
                 groups = [self.all_sprites, self.collision_sprites, self.tree_sprites],
-                name = obj.name
+                name = obj.name,
+                all_sprites = self.all_sprites
                 
             )
 

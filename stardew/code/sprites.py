@@ -1,15 +1,16 @@
 import pygame
 from settings import *
-from random import randint, choice
+from random import randint, choice, uniform
 from timer import Timer
 
 class Generic(pygame.sprite.Sprite):
-    def __init__(self, pos, surf, groups, z = LAYERS['main']):
+    def __init__(self, pos, surf, groups, z = LAYERS['main'], all_sprites = None):
         super().__init__(groups)
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
         self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.2, -self.rect.height*0.75))
+        self.all_sprites = all_sprites
 
 class Water(Generic):
     def __init__(self, pos, frames, groups):
@@ -44,12 +45,31 @@ class WildFlower(Generic):
         )
         self.hitbox = self.rect.copy().inflate((-20, -self.rect.height*0.9))
 
+class Particle(Generic):
+    def __init__(self, pos, surf, groups, z, duration = 200):
+        super().__init__(pos, surf, groups, z)
+        self.start_time = pygame.time.get_ticks()
+        self.duration = duration
+        self.z = z
+
+        # white surface
+        mask_surf = pygame.mask.from_surface(self.image)
+        new_surf = mask_surf.to_surface()
+        new_surf.set_colorkey((0, 0, 0)) 
+        self.image = new_surf       
+    
+    def update(self, dt):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.start_time >= self.duration:
+            self.kill()
+
 class Tree(Generic):
-    def __init__(self, pos, surf, groups, name):
+    def __init__(self, pos, surf, groups, name, all_sprites):
         super().__init__(
             pos = pos,
             surf = surf,
-            groups = groups
+            groups = groups,
+            all_sprites = all_sprites
         )
 
         #tree attributes
@@ -74,13 +94,16 @@ class Tree(Generic):
         #remove an apple
         if len(self.apple_sprites.sprites()) > 0:
             random_apple = choice(self.apple_sprites.sprites())
+            Particle(random_apple.rect.topleft, random_apple.image, random_apple.all_sprites, LAYERS['fruit'])
             random_apple.kill()
 
     def check_death(self):
         if self.health <= 0:
+            Particle(self.rect.topleft, self.image, self.all_sprites, LAYERS['fruit'], 350)
             self.image = self.stump_surf
             self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
             self.hitbox = self.rect.copy().inflate((-10, -self.rect.height*0.6)) 
+            self.alive = False
 
     def update(self, dt):
         if self.alive == True:
@@ -89,11 +112,15 @@ class Tree(Generic):
     ## 改成uniform random_variable?
     def create_fruit(self):
         for pos in self.apple_pos:
-            if randint(0, 10) < 2:
+            #if randint(0, 10) < 2:
+            if uniform(0, 1) < 0.2:
                 x = pos[0] + self.rect.left
                 y = pos[1] + self.rect.top
                 Generic(
                     pos = (x, y), 
                     surf = self.apples_surf, 
-                    groups = [self.apple_sprites, self.groups()[0]],
-                    z = LAYERS['fruit']) 
+                    #groups = [self.apple_sprites, self.groups()[2]],
+                    groups = [self.apple_sprites, self.all_sprites],
+                    z = LAYERS['fruit'],
+                    all_sprites = self.all_sprites
+                    ) 
