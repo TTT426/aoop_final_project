@@ -1,0 +1,32 @@
+name: Run test/code/main.py
+
+on:
+  push:
+    branches:
+      - main # 推送到 main 分支時自動觸發
+
+jobs:
+  test-main:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 檢出儲存庫
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 設置 Python 環境
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+
+      # 安裝依賴項
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 執行 main.py
+      - name: Run main.py
+        run: |
+          python test/code/main.py
