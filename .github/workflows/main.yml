@@ -8,7 +8,7 @@ on:
 jobs:
   test-main:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 3  # 限制 test-main 的執行時間
     steps:
       # 檢出儲存庫
       - name: Checkout repository
