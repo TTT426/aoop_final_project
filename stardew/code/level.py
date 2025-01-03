@@ -2,7 +2,7 @@ import pygame, sys
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle
+from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle, Chicken
 from pytmx.util_pygame import load_pygame
 from support import *
 from transition import Transition
@@ -114,6 +114,22 @@ class Level:
             groups=self.all_sprites,
             z = LAYERS['ground']
         )
+
+        #chikens
+        chiken_frames = import_folder_size('../graphics/animal/chicken', 'chicken')
+        chicken_surf_unsized = pygame.image.load('../graphics/animal/chicken/0.png')
+        chicken_surf = pygame.transform.scale(chicken_surf_unsized, (TILE_SIZE, TILE_SIZE)).convert_alpha()
+        Chicken(
+            pos = (30*64, 30*64),
+            frames = chiken_frames,
+            groups=self.all_sprites,
+        )
+        # Generic(
+        #     pos = (30*64,30*64),
+        #     surf = chicken_surf,
+        #     groups=self.all_sprites,
+        #     z = LAYERS['rain drops']
+        # )
 
         #collision tiles
         for x,y, surf in tmx_data.get_layer_by_name('Collision').tiles():

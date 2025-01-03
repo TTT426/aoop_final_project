@@ -142,3 +142,25 @@ class Tree(Generic):
                     all_sprites = self.all_sprites,
                     z = LAYERS['fruit']
                     ) 
+                
+class Chicken(Generic):
+    def __init__(self, pos, frames, groups):
+        #animation setup
+        self.frame_index = 0
+        self.frames = frames
+
+        super().__init__(
+            pos = pos, 
+            surf = self.frames[self.frame_index], 
+            groups = groups,
+            z = LAYERS['main']
+            )
+
+    def animate(self, dt):
+        self.frame_index += 4*dt
+        if self.frame_index >= len(self.frames):
+            self.frame_index = 0
+        self.image = self.frames[int(self.frame_index)]
+
+    def update(self, dt):
+        self.animate(dt)
