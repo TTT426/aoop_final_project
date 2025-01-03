@@ -26,7 +26,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # check all files
+      - name: List all files
+        run: |
+          ls -R
+
       # 執行 main.py
       - name: Run main.py
         run: |
+          cd stardew/code
           python stardew/code/main.py
