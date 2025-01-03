@@ -101,11 +101,12 @@ def start_plane_game():
         
         # 事件處理邏輯
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or Master2.health <= 0 or enemy.health <= 0:
-                running = False
-                return ("back_to_main", coin)
-            elif event.type == pygame.KEYDOWN:
-                if game_state == "start" and event.key == pygame.K_RETURN:
+            if event.type == pygame.KEYDOWN:
+                if game_state == "start" and event.key == pygame.K_ESCAPE:
+                    running = False
+                    return ("2back_to_main", coin)
+                
+                elif game_state == "start" and event.key == pygame.K_RETURN:
                     for countdown in ["3", "2", "1", "Start!"]:
                         # 繪製背景
                         screen.blit(background, (0, bg_y1))
@@ -144,7 +145,8 @@ def start_plane_game():
             "will cause you to lose one health point.",
             "And if you die, your coins will be halved",
             "Try to earn as much as you can under the Boss's wrath!",
-                "Press ENTER to start your battle!" 
+                "Submit 20 dollars and Press ENTER to start your battle!", 
+                "or Press ESC to Left!" 
             ]
             screen.blit(title_text, (screen_width // 2 - title_text.get_width() // 2, 50))
             start_y = 150  # 說明文字起始的 y 座標
@@ -155,6 +157,9 @@ def start_plane_game():
                     text_surface, 
                     (screen_width // 2 - text_surface.get_width() // 2, start_y + i * line_spacing)
                 )            
+            notices_y = start_y + len(instructions) * line_spacing  # 計算 Notices 的 y 座標
+            Notices = font.render("You Can not Left during the game!", True, RED)
+            screen.blit(Notices, (screen_width // 2 - Notices.get_width() // 2, notices_y))
             pygame.display.flip()
         
         elif game_state == "playing":
@@ -225,7 +230,32 @@ def start_plane_game():
             else:
                 # 顯示暫停文字
                 pause_text = font.render("Game Paused", True, WHITE)
-                screen.blit(pause_text, (screen_width // 2 - pause_text.get_width() // 2, screen_height // 2))
+
+                # 調整 y 座標，將文字往上移動
+                pause_y = 100 # 原本是在螢幕正中央，往上移動 100 像素
+                screen.blit(pause_text, (screen_width // 2 - pause_text.get_width() // 2, pause_y))
+                instructions = [
+                "Rules:",
+                "Use arrow keys to move the character",
+                "Press SPACEBAR to shoot bullets",
+                "Press P to pause the game",
+                "Earn 1 coin for destroying a rock (only use by the bullets)",
+                "Earn 10 coins for defeating the Boss",
+                "Colliding with the enemy, asteroids, or enemy bullets",
+                "will cause you to lose one health point.",
+                "And if you die, your coins will be halved",
+                "Try to earn as much as you can under the Boss's wrath!",
+                    "Press P to return your battle!", 
+                ]
+
+                start_y = 200  # 說明文字起始的 y 座標
+                line_spacing = 40  # 每行文字的間距
+                for i, line in enumerate(instructions):
+                    text_surface = small_font.render(line, True, WHITE)
+                    screen.blit(
+                        text_surface, 
+                        (screen_width // 2 - text_surface.get_width() // 2, start_y + i * line_spacing)
+                    )            
                 # 刷新屏幕
                 pygame.display.flip()
 
@@ -246,7 +276,7 @@ def start_plane_game():
                     # 事件處理
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                            return ("back_to_main", coin)
+                            return ("Lose", coin)
                             
             elif enemy.health <= 0:
                 sound_effect = pygame.mixer.Sound("plane_game/sound/ghost_lose.wav")
@@ -263,5 +293,5 @@ def start_plane_game():
                     # 事件處理
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                            return ("back_to_main", coin)
+                            return ("Win", coin)
     return "back_to_main"  # 結束子遊戲時返回主遊戲

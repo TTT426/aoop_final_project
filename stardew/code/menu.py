@@ -2,7 +2,6 @@ import pygame
 import settings
 from settings import *
 from timer import Timer
-# from plane_game.plane import start_plane_game  # 引入 plane_game 的函數
 
 class Menu:
     def __init__(self, player, toggle_menu):
@@ -88,8 +87,10 @@ class Menu:
                     if settings.money >= PURCHASE_PRICES[current_item]:
                         settings.money -= PURCHASE_PRICES[current_item]
                         self.player.seed_inventory[current_item] += 1
-                        if current_item == 'game':
+                        if current_item == 'plane_game':
+                            if not settings.unlock: self.display_message("You got this game forever! Press P to Start")
                             settings.unlock = True
+                            
                             if self.player.seed_inventory[current_item] != 1:
                                 self.player.seed_inventory[current_item] = 1
                                 settings.money += PURCHASE_PRICES[current_item]
@@ -121,7 +122,8 @@ class Menu:
                 pos_rect = self.sell_text.get_rect(midleft = (self.main_rect.left + 150, bg_rect.centery))
                 self.display_surface.blit(self.sell_text, pos_rect )
             else : #buy
-                pos_rect = self.buy_text.get_rect(midleft = (self.main_rect.left + 150, bg_rect.centery))
+                pos_x = self.main_rect.left + 200 if 'plane_game' in self.options[self.choose_index] else self.main_rect.left + 150
+                pos_rect = self.buy_text.get_rect(midleft=(pos_x, bg_rect.centery))
                 self.display_surface.blit(self.buy_text,pos_rect)      
 
     def update(self):
@@ -148,4 +150,4 @@ class Menu:
 
         # 更新顯示
         pygame.display.flip()
-        pygame.time.delay(1500)  # 停留 1.5 秒
+        pygame.time.delay(2000)  # 停留 1.5 秒

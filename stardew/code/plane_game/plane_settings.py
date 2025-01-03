@@ -18,4 +18,5 @@ all_sprites = pygame.sprite.Group()  # 公用的所有精靈群組
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 BLUE = (0, 0, 255)
+RED = (255, 0, 0)
 screen_width, screen_height = 1280, 720

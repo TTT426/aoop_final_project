@@ -27,9 +27,12 @@ class Game:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p and settings.unlock:  # 按下 'P' 鍵
-                    print("Switching to Plane Game")
-                    self.main_game_background = self.screen.copy()
-                    self.state = "plane_game"  # 切換到子遊戲
+                    if settings.money <= 20:
+                        self.display_message("you don't have enough money!")
+
+                    else:
+                        self.main_game_background = self.screen.copy()
+                        self.state = "plane_game"  # 切換到子遊戲
             
         dt = self.clock.tick() / 1000.0 
         self.level.run(dt)
@@ -37,12 +40,27 @@ class Game:
 
     def plane_game(self):
         result, coin_value = start_plane_game()  # 執行子遊戲
-        print("Returning to Main Game with coin =", coin_value)
-        settings.money += coin_value
+        print(result, coin_value)
+        if result == "Win":
+            settings.money += coin_value-20
+        elif result == "Lose":
+            settings.money += round(coin_value//2) - 20
         pygame.display.set_caption('NYCU VALLEY')
         self.state = "main_game"  # 子遊戲結束後返回主遊戲
 
+    def display_message(self, message):
+        """顯示文字訊息在螢幕上"""
+        # 創建文字表面
+        message_surf = self.font.render(message, True, 'Black')
+        message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
 
+        # 畫出文字背景
+        pygame.draw.rect(self.display_surface, 'White', message_rect.inflate(10, 10))
+        self.display_surface.blit(message_surf, message_rect)
+
+        # 更新顯示
+        pygame.display.flip()
+        pygame.time.delay(2000)  # 停留 1.5 秒
 if __name__ == '__main__':
     game = Game()
     game.run()
