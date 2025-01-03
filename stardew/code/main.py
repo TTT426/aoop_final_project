@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, settings, player
 from settings import *
 from level import Level
 from plane_game.plane import start_plane_game  # 引入 plane_game 的函數
@@ -26,7 +26,7 @@ class Game:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:  # 按下 'P' 鍵
+                if event.key == pygame.K_p and settings.unlock:  # 按下 'P' 鍵
                     print("Switching to Plane Game")
                     self.main_game_background = self.screen.copy()
                     self.state = "plane_game"  # 切換到子遊戲
@@ -38,6 +38,7 @@ class Game:
     def plane_game(self):
         result, coin_value = start_plane_game()  # 執行子遊戲
         print("Returning to Main Game with coin =", coin_value)
+        settings.money += coin_value
         pygame.display.set_caption('NYCU VALLEY')
         self.state = "main_game"  # 子遊戲結束後返回主遊戲
 

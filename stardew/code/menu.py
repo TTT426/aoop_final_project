@@ -1,6 +1,8 @@
 import pygame
+import settings
 from settings import *
 from timer import Timer
+# from plane_game.plane import start_plane_game  # 引入 plane_game 的函數
 
 class Menu:
     def __init__(self, player, toggle_menu):
@@ -26,7 +28,7 @@ class Menu:
         self.timer = Timer(200)
 
     def display_money(self):
-        text_surf = self.font.render(f'${self.player.money}', False, 'Black')
+        text_surf = self.font.render(f'${settings.money}', False, 'Black')
         text_rect = text_surf.get_rect(midbottom = (SCREEN_WIDTH/2, SCREEN_HEIGHT-20))
 
         pygame.draw.rect(self.display_surface, 'White', text_rect.copy().inflate(10, 10),0, 4)
@@ -80,13 +82,18 @@ class Menu:
                 if self.choose_index <= self.sell_border:
                     if self.player.item_inventory[current_item] > 0:
                         self.player.item_inventory[current_item] -= 1
-                        self.player.money += SALE_PRICES[current_item]
+                        settings.money += SALE_PRICES[current_item]
                 #buy
                 else:
-                    if self.player.money >= PURCHASE_PRICES[current_item]:
-                        self.player.money -= PURCHASE_PRICES[current_item]
+                    if settings.money >= PURCHASE_PRICES[current_item]:
+                        settings.money -= PURCHASE_PRICES[current_item]
                         self.player.seed_inventory[current_item] += 1
-        
+                        if current_item == 'game':
+                            settings.unlock = True
+                            if self.player.seed_inventory[current_item] != 1:
+                                self.player.seed_inventory[current_item] = 1
+                                settings.money += PURCHASE_PRICES[current_item]
+                                self.display_message("You bought this!")       
         if self.choose_index < 0:
             self.choose_index = 0
         if self.choose_index > len(self.options)-1:
@@ -128,4 +135,17 @@ class Menu:
             item_is_choosed = text_index == self.choose_index
             self.show_entry(text_surf, amount, top, item_is_choosed)
 
-       
+    
+    def display_message(self, message):
+        """顯示文字訊息在螢幕上"""
+        # 創建文字表面
+        message_surf = self.font.render(message, True, 'Black')
+        message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+
+        # 畫出文字背景
+        pygame.draw.rect(self.display_surface, 'White', message_rect.inflate(10, 10))
+        self.display_surface.blit(message_surf, message_rect)
+
+        # 更新顯示
+        pygame.display.flip()
+        pygame.time.delay(1500)  # 停留 1.5 秒

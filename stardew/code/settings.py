@@ -1,4 +1,9 @@
 from pygame.math import Vector2
+
+## global variable
+unlock = False
+money = 200
+
 #screensize
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
@@ -49,5 +54,7 @@ SALE_PRICES = {
 
 PURCHASE_PRICES = {
     'corn': 4,
-    'tomato': 5
+    'tomato': 5,
+    'game': 20
 }
+

@@ -1,4 +1,4 @@
-import pygame, os
+import pygame, os, settings
 from settings import *
 from support import *
 from pathlib import Path
@@ -55,9 +55,10 @@ class Player(pygame.sprite.Sprite):
         }
         self.seed_inventory = {
             'corn':5, 
-            'tomato':5
+            'tomato': 5,
+            'game': 0
         }
-        self.money = 200
+        self.money = settings.money
 
         #interaction
         self.tree_sprites = tree_sprites
