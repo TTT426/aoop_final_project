@@ -20,13 +20,13 @@ def start_plane_game():
 
     # 初始化 pygame
     pygame.mixer.init()  # 初始化音頻模組
-    screen = pygame.display.set_mode((1371, length))
+    screen = pygame.display.set_mode((screen_width, length))
     pygame.display.set_caption("Plane shoot")
     clock = pygame.time.Clock() 
 
     # 載圖片
     background = pygame.image.load("plane_game/img/background.png").convert()
-    background = pygame.transform.scale(background, (1371, length))  # 確保背景大小與視窗一致
+    background = pygame.transform.scale(background, (screen_width, length))  # 確保背景大小與視窗一致
     rock_image = pygame.image.load("plane_game/img/rock.png").convert_alpha()
     rock_image = pygame.transform.scale(rock_image, (45, 40))
     Master_image = pygame.image.load("plane_game/img/Master.png").convert_alpha()
@@ -138,9 +138,11 @@ def start_plane_game():
             "Use arrow keys to move the character",
             "Press SPACEBAR to shoot bullets",
             "Press P to pause the game",
-            "Earn 1 coin for destroying a rock",
+            "Earn 1 coin for destroying a rock (only use by the bullets)",
             "Earn 10 coins for defeating the Boss",
-            "If you die, your coins will be halved",
+            "Colliding with the enemy, asteroids, or enemy bullets",
+            "will cause you to lose one health point.",
+            "And if you die, your coins will be halved",
             "Try to earn as much as you can under the Boss's wrath!",
                 "Press ENTER to start your battle!" 
             ]
@@ -263,4 +265,3 @@ def start_plane_game():
                         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                             return ("back_to_main", coin)
     return "back_to_main"  # 結束子遊戲時返回主遊戲
-
