@@ -1,4 +1,4 @@
-name: Run test/code/main.py
+name: Run stardew/code/main.py
 
 on:
   push:
@@ -29,4 +29,4 @@ jobs:
       # 執行 main.py
       - name: Run main.py
         run: |
-          python test/code/main.py
+          python stardew/code/main.py
