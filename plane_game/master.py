@@ -25,8 +25,8 @@ class Master(pygame.sprite.Sprite):
         # 確保玩家不會超出視窗邊界
         if self.rect.left < 0:
             self.rect.left = 0
-        if self.rect.right > 1371:
-            self.rect.right = 1371
+        if self.rect.right > screen_width:
+            self.rect.right = screen_width
         if self.rect.top < 0:
             self.rect.top = 0
         if self.rect.bottom > length:
