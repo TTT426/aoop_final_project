@@ -10,7 +10,7 @@ bg_y2 = -length  # 第二張背景緊接在第一張背景上方
 
 down_offset = 0.5
 
-rocket_number = 0
+rocket_number = 10
 
 enemy_bullets = pygame.sprite.Group()  # 公用的敵人子彈群組
 all_sprites = pygame.sprite.Group()  # 公用的所有精靈群組
