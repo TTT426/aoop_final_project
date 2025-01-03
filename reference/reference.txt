@@ -1,8 +1,24 @@
-https://opengameart.org
+plane_game: 
+    
+img:
+    -background : https://pixabay.com/zh/photos/background-texture-abstract-grunge-3466742/
+    @author : Amely
+    License(s): CC0
 
-plane_game:
+    -bullet3 / explosion / rock : https://opengameart.org/content/asteroid-explosions-rocket-mine-and-laser
+    @author : Jonas Wagner - http://29a.ch/
+    License(s) : CC-BY-SA 3.0
 
-ghost_picture: https://opengameart.org/content/ghost-for-rpg
-@author: NidhoggN
+    -ghost_picture: https://opengameart.org/content/ghost-for-rpg
+    @author : NidhoggN
+    License(s) :  CC-BY 4.0
+    
+    -Master :
 
+sound:
+    -ghost_lose : https://opengameart.org/content/ghost
+    License(s) : CC0
+    
+    -ghost_win : https://opengameart.org/content/ghostly-cackle-laugh-1
+    License(s) : CC0
 stardew:
