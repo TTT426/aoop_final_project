@@ -1,5 +1,10 @@
 # AOOP final project
-更新:
+## 檔案說明:
+test:
+由於stardew(main game) 尚在開發 所以先複製stardew的半成品的code
+並利用半成品的code 做plane_game 和 stardew（半成品）的對接
+等到stardew全部完成時 能夠快速地完成對接（減少之後需要對接的時間）
+## 更新:
 gitactions錯誤很正常 因為test的RPG遊戲是半成品 有些東西沒抓到十分合理
 1. plane_game 的大致架構
 2. stardew 的大致架構
@@ -9,9 +14,8 @@ gitactions錯誤很正常 因為test的RPG遊戲是半成品 有些東西沒抓�
 run main.py in stardew/code
 ## 待完成
 plane_game:
-1. 進階美術渲染（如爆炸等）
-2. 技能？
-3. 開始遊戲錢加個 3, 2, 1的特效
+1. 技能
+
 ## Debug :
 1. stardew moving when cutting trees
 2. stardew not watering when the plant grows in the raining day
