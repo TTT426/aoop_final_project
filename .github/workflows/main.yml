@@ -35,4 +35,4 @@ jobs:
       - name: Run main.py
         run: |
           cd stardew/code
-          python stardew/code/main.py
+          python main.py
