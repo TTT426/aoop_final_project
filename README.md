@@ -16,7 +16,7 @@ run main.py in stardew/code
 plane_game:
 1. 技能
 
-## Debug :
+## Bug :
 1. stardew moving when cutting trees
 2. stardew not watering when the plant grows in the raining day
 ## 專案架構 （暫定）
