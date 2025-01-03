@@ -32,7 +32,8 @@ jobs:
           ls -R
 
       # 執行 main.py
-      - name: Run main.py
+      - name: Run main.py with dummy audio
         run: |
+          export SDL_AUDIODRIVER=dummy
           cd stardew/code
           python main.py
