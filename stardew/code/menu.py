@@ -137,7 +137,6 @@ class Menu:
             item_is_choosed = text_index == self.choose_index
             self.show_entry(text_surf, amount, top, item_is_choosed)
 
-    
     def display_message(self, message):
         """顯示文字訊息在螢幕上"""
         # 創建文字表面
