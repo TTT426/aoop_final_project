@@ -142,12 +142,19 @@ class Tree(Generic):
                     all_sprites = self.all_sprites,
                     z = LAYERS['fruit']
                     ) 
-                
-class Chicken(Generic):
+
+class Animal(Generic):
     def __init__(self, pos, frames, groups):
         #animation setup
         self.frame_index = 0
         self.frames = frames
+    
+        #movement setup
+        self.direction = pygame.math.Vector2(-1,0)
+        self.speed = 100
+        self.run = False
+        self.pos = pygame.math.Vector2(pos)
+        self.timer = Timer(3000)
 
         super().__init__(
             pos = pos, 
@@ -155,7 +162,19 @@ class Chicken(Generic):
             groups = groups,
             z = LAYERS['main']
             )
+        
+    def move(self,dt):
+        if self.run == True:
+            self.pos += self.direction * self.speed * dt
+            self.rect.center = self.pos
 
+    def move_or_rest(self):
+        if self.timer.active == False:
+            if randint(0,10) < 5:
+                self.run = not self.run
+                print(self.run)
+                self.timer.activate()
+        
     def animate(self, dt):
         self.frame_index += 4*dt
         if self.frame_index >= len(self.frames):
@@ -163,4 +182,16 @@ class Chicken(Generic):
         self.image = self.frames[int(self.frame_index)]
 
     def update(self, dt):
-        self.animate(dt)
+        self.move_or_rest()
+        self.move(dt)
+        self.timer.update()
+        self.animate(dt) 
+
+class Chicken(Animal):
+    def __init__(self, pos, frames, groups):
+        super().__init__(
+            pos = pos, 
+            frames = frames, 
+            groups = groups,
+            )
+

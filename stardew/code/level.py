@@ -116,13 +116,11 @@ class Level:
         )
 
         #chikens
-        chiken_frames = import_folder_size('../graphics/animal/chicken', 'chicken')
-        chicken_surf_unsized = pygame.image.load('../graphics/animal/chicken/0.png')
-        chicken_surf = pygame.transform.scale(chicken_surf_unsized, (TILE_SIZE, TILE_SIZE)).convert_alpha()
+        chiken_frames = import_folder_size('../graphics/animals/chicken/left_run', 'chicken')
         Chicken(
             pos = (30*64, 30*64),
             frames = chiken_frames,
-            groups=self.all_sprites,
+            groups=[self.all_sprites, self.collision_sprites]
         )
         # Generic(
         #     pos = (30*64,30*64),
@@ -144,7 +142,7 @@ class Level:
             if obj.name == 'Start':
                 self.player = Player(
                     pos =(obj.x, obj.y),
-                    group =  self.all_sprites, 
+                    group =  [self.all_sprites], 
                     collision_sprites=self.collision_sprites,
                     tree_sprites = self.tree_sprites,
                     interation = self.interaction_sprites,
