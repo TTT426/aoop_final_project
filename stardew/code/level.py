@@ -118,18 +118,12 @@ class Level:
         #chikens
         chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
         Chicken(
-            pos = (30*64, 30*64),
+            pos = (25*64, 25*64),
             #frames = chiken_frames,
-            frames = chiken_frames_dict['left_idle'],
-            groups=[self.all_sprites, self.collision_sprites]
+            frames_dict = chiken_frames_dict,
+            groups=[self.all_sprites]
         )
-        # Generic(
-        #     pos = (30*64,30*64),
-        #     surf = chicken_surf,
-        #     groups=self.all_sprites,
-        #     z = LAYERS['rain drops']
-        # )
-
+        
         #collision tiles
         for x,y, surf in tmx_data.get_layer_by_name('Collision').tiles():
             Generic(

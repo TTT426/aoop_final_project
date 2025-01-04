@@ -9,7 +9,7 @@ class Generic(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(topleft = pos)
         self.z = z
-        self.hitbox = self.rect.copy().inflate((-self.rect.width * 0.2, -self.rect.height*0.75))
+        self.hitbox = self.rect.copy().inflate((-self.rect.width*0.2, -self.rect.height*0.75))
         self.all_sprites = all_sprites
 
 class Interaction(Generic):
@@ -144,10 +144,10 @@ class Tree(Generic):
                     ) 
 
 class Animal(Generic):
-    def __init__(self, pos, frames, groups):
+    def __init__(self, pos, frames_dict, groups):
         #animation setup
         self.frame_index = 0
-        self.frames = frames
+        self.frames_dict = frames_dict
     
         #movement setup
         self.direction = pygame.math.Vector2(-1,0)
@@ -155,42 +155,68 @@ class Animal(Generic):
         self.run = False
         self.pos = pygame.math.Vector2(pos)
         self.timer = Timer(3000)
+        self.status = 'left_run'
 
         super().__init__(
             pos = pos, 
-            surf = self.frames[self.frame_index], 
+            surf = self.frames_dict[self.status][self.frame_index], 
             groups = groups,
             z = LAYERS['main']
             )
         
     def move(self,dt):
         if self.run == True:
-            self.pos += self.direction * self.speed * dt
-            self.rect.center = self.pos
+            direction_normalized = self.direction.normalize()
+            self.pos += direction_normalized * self.speed * dt
+            
+            self.rect.centerx = round(self.pos.x)
+            self.rect.centery = round(self.pos.y)
 
-    def move_or_rest(self):
+    def get_status(self):
+        if self.run and self.direction.x == -1:
+            self.status = 'left_run'
+        elif self.run and self.direction.x == 1:
+            self.status = 'right_run'
+        elif not self.run and self.direction.x == -1:
+            self.status = 'left_idle' 
+        elif not self.run and self.direction.x == 1:
+            self.status = 'right_idle'
+
+    def movement_update(self):
         if self.timer.active == False:
             if randint(0,10) < 5:
                 self.run = not self.run
+                self.frame_index = 0
+                if self.run  ==  True:
+                    self.direction.x = choice([-1, 1])
+                    self.direction.y = choice([-1,0,1])
+                    self.timer.duration = 3000
+                else:
+                    self.timer.duration = 10000
                 self.timer.activate()
+
         
     def animate(self, dt):
-        self.frame_index += 4*dt
-        if self.frame_index >= len(self.frames):
+        if self.run == True:
+            self.frame_index += 4*dt
+        else :
+            self.frame_index += 0.5*dt
+        if self.frame_index >= len(self.frames_dict[self.status]):
             self.frame_index = 0
-        self.image = self.frames[int(self.frame_index)]
+        self.image = self.frames_dict[self.status][int(self.frame_index)]
 
     def update(self, dt):
-        self.move_or_rest()
+        self.movement_update()
+        self.get_status()
         self.move(dt)
         self.timer.update()
         self.animate(dt) 
 
 class Chicken(Animal):
-    def __init__(self, pos, frames, groups):
+    def __init__(self, pos, frames_dict, groups):
         super().__init__(
             pos = pos, 
-            frames = frames, 
+            frames_dict = frames_dict, 
             groups = groups,
             )
 
