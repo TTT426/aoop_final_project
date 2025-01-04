@@ -2,7 +2,8 @@ import pygame
 from settings import *
 from pytmx.util_pygame import load_pygame
 from support import *
-from random import choice
+from random import choice, randint
+from timer import Timer
 
 class SoilTile(pygame.sprite.Sprite):
     def __init__(self, pos, surf, groups):
@@ -57,6 +58,13 @@ class Plant(pygame.sprite.Sprite):
             self.image = self.frames[int(self.age)]
             self.rect= self.image.get_rect(midbottom = self.soil.rect.midbottom + pygame.math.Vector2(0, self.y_offset))
 
+class Egg(pygame.sprite.Sprite):
+    def __init__(self, groups, pos):
+        super().__init__(groups)
+        self.image = pygame.image.load('../graphics/animals/chicken/egg/egg.png')
+        self.rect = self.image.get_rect(center = pos)
+        self.z = LAYERS['ground plant']
+
 class SoilLayer:
     def __init__(self, all_sprites, collision_sprites):
 
@@ -66,6 +74,7 @@ class SoilLayer:
         self.soil_sprites = pygame.sprite.Group()
         self.water_sprites = pygame.sprite.Group()
         self.plant_sprites = pygame.sprite.Group()
+        self.egg_sprites= pygame.sprite.Group()
 
         #graphics
         self.soil_surfs = import_folder_dict('../graphics/soil/')
@@ -80,6 +89,9 @@ class SoilLayer:
 
         self.plant_sound = pygame.mixer.Sound('../audio/plant.wav')
         self.plant_sound.set_volume(0.1)
+
+        #egg
+        self.timer = Timer(1000)
 
     def create_soil_grid(self):
         ground = pygame.image.load('../graphics/world/ground.png')
@@ -215,5 +227,16 @@ class SoilLayer:
                     SoilTile(
                         pos = (index_col*TILE_SIZE,index_row*TILE_SIZE), 
                         surf = self.soil_surfs[tile_type], 
-                        groups=[self.all_sprites, self.soil_sprites])
+                        groups=[self.all_sprites, self.soil_sprites]) 
+
+    def animal_production(self, num):
+        if self.timer.active == False:
+            self.timer.activate()
+            for index_row, row in enumerate(self.grid):
+                for index_col, cell in enumerate(row):
+                    if 'F' in cell:
+                        if randint(0,200) < num:
+                            self.grid[index_row][index_col].remove('F')
+                            Egg([self.all_sprites, self.egg_sprites ], (index_col*TILE_SIZE+32, index_row*TILE_SIZE+32))
                     
+

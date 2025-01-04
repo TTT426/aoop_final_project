@@ -48,6 +48,10 @@ class Level:
         self.backgound_music.set_volume(0.05)
         self.backgound_music.play(loops = -1)
 
+        #animal
+        self.chiken_num = len(ANIMAL_POS['chicken'])
+        self.cow_num = len(ANIMAL_POS['cow'])
+
 
     def setup(self):
         tmx_data = load_pygame('../data/map.tmx')
@@ -234,6 +238,9 @@ class Level:
         else:
             self.all_sprites.update(dt)
             self.plant_collision()
+            #animal production
+            self.soil_layer.animal_production(self.chiken_num)
+            self.soil_layer.timer.update()
 
         #weather
         self.overlay.display()

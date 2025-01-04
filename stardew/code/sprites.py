@@ -146,8 +146,9 @@ class Tree(Generic):
 class Animal(Generic):
     def __init__(self, pos, frames_dict, groups, collision_sprites, name):
 
+        #general setup
         self.name = name
-
+        
         #animation setup
         self.frame_index = 0
         self.frames_dict = frames_dict
@@ -255,6 +256,7 @@ class Animal(Generic):
         self.timer.update()
         self.animate(dt) 
 
+
 class Chicken(Animal):
     def __init__(self, pos, frames_dict, groups, collision_sprites, name):
         super().__init__(
@@ -263,7 +265,7 @@ class Chicken(Animal):
             groups = groups,
             collision_sprites = collision_sprites,
             name = name
-            )
+        )
         
         
 class Cow(Animal):
