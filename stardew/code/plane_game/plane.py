@@ -192,7 +192,7 @@ def start_plane_game():
                 enemy.take_damage(1)
                 a.kill()
                 if enemy.health <= 0:
-                    explosion = Explosion(hit.rect.centerx, hit.rect.centery, explosion_frames)
+                    explosion = Explosion(a.rect.centerx, a.rect.centery, explosion_frames)
                     all_sprites.add(explosion)
                     coin += 10  # 打倒敵人加10分
             

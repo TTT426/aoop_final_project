@@ -2,7 +2,7 @@ from .plane_settings import *
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, speedx=0, speedy=-10, image=None, color=(255, 255, 255)):
-        super(Bullet, self).__init__()
+        super().__init__()
         if image:
             self.image = image
         else:

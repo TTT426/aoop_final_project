@@ -4,7 +4,7 @@ from .plane_settings import *
 
 class Rock(pygame.sprite.Sprite):
     def __init__(self, rock_image):
-        super(Rock, self).__init__()
+        super().__init__()
         if rock_image:
             self.image = rock_image  # 使用載入的 rock.png
         else:

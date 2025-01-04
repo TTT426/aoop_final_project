@@ -11,9 +11,6 @@ class ResourceManager:
         self.fonts = {}
 
     def load_resources(self):
-        """
-        統一呼叫此函式，載入所有遊戲裡用到的資源。
-        """
         self.load_images()
         self.load_sounds()
         self.load_fonts()

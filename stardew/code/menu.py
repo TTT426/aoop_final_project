@@ -94,7 +94,7 @@ class Menu:
                             if self.player.seed_inventory[current_item] != 1:
                                 self.player.seed_inventory[current_item] = 1
                                 settings.money += PURCHASE_PRICES[current_item]
-                                self.display_message("You bought this!")       
+                                self.display_message("You had bought this!")       
         if self.choose_index < 0:
             self.choose_index = 0
         if self.choose_index > len(self.options)-1:
@@ -138,7 +138,6 @@ class Menu:
             self.show_entry(text_surf, amount, top, item_is_choosed)
 
     def display_message(self, message):
-        """顯示文字訊息在螢幕上"""
         # 創建文字表面
         message_surf = self.font.render(message, True, 'Black')
         message_rect = message_surf.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))

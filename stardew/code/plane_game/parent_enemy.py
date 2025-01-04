@@ -4,7 +4,7 @@ from .plane_settings import *
 
 class Parent_Enemy(pygame.sprite.Sprite):
         def __init__(self, image, Master):
-            super(Parent_Enemy, self).__init__()
+            super().__init__()
             self.image = image
             self.rect = self.image.get_rect()
             self.rect.x = random.randint(0, screen_width - self.rect.width)
