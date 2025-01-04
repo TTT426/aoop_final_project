@@ -7,7 +7,7 @@ class Parent_Enemy(pygame.sprite.Sprite):
             super(Parent_Enemy, self).__init__()
             self.image = image
             self.rect = self.image.get_rect()
-            self.rect.x = random.randint(0, 1371 - self.rect.width)
+            self.rect.x = random.randint(0, screen_width - self.rect.width)
             self.rect.y = random.randint(0, 500)
             self.speedx = random.uniform(-3, 3)  # 初始化速度
             self.speedy = random.uniform(-3, 3)  # 初始化速度
@@ -25,7 +25,7 @@ class Parent_Enemy(pygame.sprite.Sprite):
             self.rect.y += self.speedy
 
             # 邊界檢測與反彈
-            if self.rect.left <= 0 or self.rect.right >= 1371:
+            if self.rect.left <= 0 or self.rect.right >= screen_width:
                 self.speedx = -self.speedx
                 self.rect.x += self.speedx
             if self.rect.top <= 0 or self.rect.bottom >= length:

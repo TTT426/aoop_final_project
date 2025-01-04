@@ -4,6 +4,7 @@ from .rock import Rock
 from .bullet import Bullet
 from .explosion import Explosion
 from .parent_enemy import Parent_Enemy
+from .ResourceManager import ResourceManager
 
 def start_plane_game():
     # 遊戲開始
@@ -11,9 +12,8 @@ def start_plane_game():
     coin = 0
     # 遊戲暫停
     paused = False
-    # 字體設定
-    font = pygame.font.Font(None, 74)
-    small_font = pygame.font.Font(None, 36)
+
+    
     # 初始化背景位置
     bg_y1 = 0
     bg_y2 = -length  # 假設背景圖片高度為 `length`
@@ -24,23 +24,22 @@ def start_plane_game():
     pygame.display.set_caption("Plane shoot")
     clock = pygame.time.Clock() 
 
-    # 載圖片
-    background = pygame.image.load("plane_game/img/background.png").convert()
-    background = pygame.transform.scale(background, (screen_width, length))  # 確保背景大小與視窗一致
-    rock_image = pygame.image.load("plane_game/img/rock.png").convert_alpha()
-    rock_image = pygame.transform.scale(rock_image, (45, 40))
-    Master_image = pygame.image.load("plane_game/img/Master.png").convert_alpha()
-    Master_image = pygame.transform.scale(Master_image, (99, 75))
-    bullet_image = pygame.image.load("plane_game/img/bullet3.png").convert_alpha()
-    enemy_image = pygame.image.load("plane_game/img/ghost.png").convert_alpha()
-    enemy_image = pygame.transform.scale(enemy_image, (99, 75))
-    explosion_image = pygame.image.load("plane_game/img/explosion.png").convert_alpha()
+    # 載入字體與圖片
+    resource_manager = ResourceManager(screen_width, length)
+    resource_manager.load_resources()
+    font = resource_manager.get_font("large")
+    small_font = resource_manager.get_font("small")
+    background = resource_manager.get_image("background")
+    rock_image = resource_manager.get_image("rock")
+    Master_image = resource_manager.get_image("master")
+    bullet_image = resource_manager.get_image("bullet")
+    enemy_image = resource_manager.get_image("enemy")
+    explosion_image = resource_manager.get_image("explosion")
 
     # deal with explosion
     explosion_frames = []
     total_width = explosion_image.get_width()
     total_height = explosion_image.get_height()
-    
     frame_width = total_width // 16
     frame_height = total_height
 
@@ -260,7 +259,7 @@ def start_plane_game():
                 pygame.display.flip()
 
             if Master2.health <= 0:
-                pygame.mixer.music.load("plane_game/sound/ghost_win.ogg")
+                pygame.mixer.music.load(resource_manager.get_music("ghost_win"))
                 pygame.mixer.music.play(loops=2)
                 pygame.mixer.music.set_volume(1)
                 while True:
@@ -279,7 +278,7 @@ def start_plane_game():
                             return ("Lose", coin)
                             
             elif enemy.health <= 0:
-                sound_effect = pygame.mixer.Sound("plane_game/sound/ghost_lose.wav")
+                sound_effect = pygame.mixer.Sound(resource_manager.get_sound("ghost_lose"))
                 sound_effect.play(loops=2)
                 sound_effect.set_volume(1)
                 while True:
