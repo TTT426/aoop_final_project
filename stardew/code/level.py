@@ -116,10 +116,11 @@ class Level:
         )
 
         #chikens
-        chiken_frames = import_folder_size('../graphics/animals/chicken/left_run', 'chicken')
+        chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
         Chicken(
             pos = (30*64, 30*64),
-            frames = chiken_frames,
+            #frames = chiken_frames,
+            frames = chiken_frames_dict['left_idle'],
             groups=[self.all_sprites, self.collision_sprites]
         )
         # Generic(

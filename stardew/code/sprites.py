@@ -172,7 +172,6 @@ class Animal(Generic):
         if self.timer.active == False:
             if randint(0,10) < 5:
                 self.run = not self.run
-                print(self.run)
                 self.timer.activate()
         
     def animate(self, dt):
