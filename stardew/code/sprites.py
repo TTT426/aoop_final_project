@@ -144,33 +144,75 @@ class Tree(Generic):
                     ) 
 
 class Animal(Generic):
-    def __init__(self, pos, frames_dict, groups):
+    def __init__(self, pos, frames_dict, groups, collision_sprites):
+
         #animation setup
         self.frame_index = 0
         self.frames_dict = frames_dict
-    
+
         #movement setup
         self.direction = pygame.math.Vector2(-1,0)
-        self.speed = 100
-        self.run = False
+        self.speed = 75
+        self.run = True
         self.pos = pygame.math.Vector2(pos)
         self.timer = Timer(3000)
         self.status = 'left_run'
-
+        
         super().__init__(
             pos = pos, 
             surf = self.frames_dict[self.status][self.frame_index], 
             groups = groups,
             z = LAYERS['main']
-            )
+        )
+
+        #collision setup
+        self.collision_sprites = collision_sprites
+        #self.rect = self.image.get_rect(center = pos)
+        #self.hitbox = self.rect.copy().inflate((-self.rect.width*0.6, -self.rect.height*0.3))
+        self.rect = self.image.get_rect(bottomleft = pos)
+        self.hitbox = self.rect.copy()
         
     def move(self,dt):
         if self.run == True:
-            direction_normalized = self.direction.normalize()
-            self.pos += direction_normalized * self.speed * dt
-            
+            if self.direction.length() > 0:
+                direction_normalized = self.direction.normalize()
+            else:
+                direction_normalized = pygame.math.Vector2(0,0)
+            #horizontal movement
+            self.pos.x += direction_normalized.x * self.speed * dt
+            self.hitbox.centerx = round(self.pos.x)
             self.rect.centerx = round(self.pos.x)
-            self.rect.centery = round(self.pos.y)
+            self.collision('horizontal')
+
+            #vertical movement
+            self.pos.y += direction_normalized.y * self.speed * dt
+            self.hitbox.centery = round(self.pos.y)
+            self.rect.centery= round(self.pos.y)
+            self.collision('vertical')
+
+    def collision(self, direction):
+        for sprite in self.collision_sprites.sprites():
+            if hasattr(sprite, 'hitbox'):
+                if self.hitbox.colliderect(sprite.hitbox):
+                    if direction == 'horizontal':
+                        if self.direction.x > 0: #moving right
+                            self.run = False
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0: #moving left
+                            self.run = False
+                            self.hitbox.left = sprite.hitbox.right
+                        self.rect.centerx = self.hitbox.centerx
+                        self.pos.x = self.hitbox.centerx
+                    
+                    if direction == 'vertical':
+                        if self.direction.y > 0: #moving down
+                            self.direction.y = 0
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0: #moving up
+                            self.direction.y = 0
+                            self.hitbox.top = sprite.hitbox.bottom
+                        self.rect.centery = self.hitbox.centery
+                        self.pos.y = self.hitbox.centery
 
     def get_status(self):
         if self.run and self.direction.x == -1:
@@ -188,14 +230,13 @@ class Animal(Generic):
                 self.run = not self.run
                 self.frame_index = 0
                 if self.run  ==  True:
-                    self.direction.x = choice([-1, 1])
+                    self.direction.x = choice([-1,1])
                     self.direction.y = choice([-1,0,1])
                     self.timer.duration = 3000
                 else:
                     self.timer.duration = 10000
                 self.timer.activate()
-
-        
+     
     def animate(self, dt):
         if self.run == True:
             self.frame_index += 4*dt
@@ -213,10 +254,14 @@ class Animal(Generic):
         self.animate(dt) 
 
 class Chicken(Animal):
-    def __init__(self, pos, frames_dict, groups):
+    def __init__(self, pos, frames_dict, groups, collision_sprites):
         super().__init__(
             pos = pos, 
             frames_dict = frames_dict, 
             groups = groups,
+            collision_sprites = collision_sprites
             )
+        
+        #collision setup
+        #self.hitbox = self.rect.copy().inflate((-20, -self.rect.height*0.5))
 

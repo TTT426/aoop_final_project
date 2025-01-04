@@ -21,6 +21,7 @@ class Level:
         #sprite groups
         self.all_sprites = CameraGroup()
         self.collision_sprites = pygame.sprite.Group()
+        self.animal_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
 
@@ -114,23 +115,25 @@ class Level:
             groups=self.all_sprites,
             z = LAYERS['ground']
         )
-
-        #chikens
-        chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
-        Chicken(
-            pos = (25*64, 25*64),
-            #frames = chiken_frames,
-            frames_dict = chiken_frames_dict,
-            groups=[self.all_sprites]
-        )
         
         #collision tiles
         for x,y, surf in tmx_data.get_layer_by_name('Collision').tiles():
             Generic(
                 pos = (x * TILE_SIZE, y * TILE_SIZE),
                 surf = pygame.Surface((TILE_SIZE, TILE_SIZE)),
-                groups = self.collision_sprites,
+                groups = self.collision_sprites
             )
+
+        #chikens
+        chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
+        Chicken(
+            pos = (30*64, 30*64),
+            #frames = chiken_frames,
+            frames_dict = chiken_frames_dict,
+            #groups = [self.all_sprites],
+            groups = [self.all_sprites, self.animal_sprites],
+            collision_sprites = self.collision_sprites
+        )
 
         #Player
         for obj in tmx_data.get_layer_by_name('Player'):
@@ -139,6 +142,7 @@ class Level:
                     pos =(obj.x, obj.y),
                     group =  [self.all_sprites], 
                     collision_sprites=self.collision_sprites,
+                    animal_sprites = self.animal_sprites,
                     tree_sprites = self.tree_sprites,
                     interation = self.interaction_sprites,
                     soil_layer = self.soil_layer,
@@ -247,7 +251,7 @@ class CameraGroup(pygame.sprite.Group):
                     self.display_surface.blit(sprite.image, offset_rect)
 
                     # #anaylatics
-                    # if sprite == player:
+                    # if sprite == chicken:
                     #     pygame.draw.rect(self.display_surface, 'red', offset_rect, 5)
                     #     hitbox_rect = player.hitbox.copy()
                     #     hitbox_rect.center = offset_rect.center

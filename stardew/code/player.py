@@ -7,7 +7,7 @@ from timer import Timer
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, group, collision_sprites, tree_sprites, interation, soil_layer, toggle_shop):
+    def __init__(self, pos, group, collision_sprites, animal_sprites, tree_sprites, interation, soil_layer, toggle_shop):
         super().__init__(group)
 
         self.import_assets()
@@ -27,6 +27,7 @@ class Player(pygame.sprite.Sprite):
         #collision
         self.hitbox = self.rect.copy().inflate((-126, -70))
         self.collision_sprites = collision_sprites
+        self.animal_sprites = animal_sprites
 
         #timers
         self.timers = {
@@ -207,6 +208,25 @@ class Player(pygame.sprite.Sprite):
 
     def collision(self, direction):
         for sprite in self.collision_sprites.sprites():
+            if hasattr(sprite, 'hitbox'):
+                if self.hitbox.colliderect(sprite.hitbox):
+                    if direction == 'horizontal':
+                        if self.direction.x > 0: #moving right
+                            self.hitbox.right = sprite.hitbox.left
+                        if self.direction.x < 0: #moving left
+                            self.hitbox.left = sprite.hitbox.right
+                        self.rect.centerx = self.hitbox.centerx
+                        self.pos.x = self.hitbox.centerx
+                    
+                    if direction == 'vertical':
+                        if self.direction.y > 0: #moving down
+                            self.hitbox.bottom = sprite.hitbox.top
+                        if self.direction.y < 0: #moving up
+                            self.hitbox.top = sprite.hitbox.bottom
+                        self.rect.centery = self.hitbox.centery
+                        self.pos.y = self.hitbox.centery
+                        
+        for sprite in self.animal_sprites.sprites():
             if hasattr(sprite, 'hitbox'):
                 if self.hitbox.colliderect(sprite.hitbox):
                     if direction == 'horizontal':
