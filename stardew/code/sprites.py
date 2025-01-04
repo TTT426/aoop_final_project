@@ -144,15 +144,18 @@ class Tree(Generic):
                     ) 
 
 class Animal(Generic):
-    def __init__(self, pos, frames_dict, groups, collision_sprites):
+    def __init__(self, pos, frames_dict, groups, collision_sprites, name):
+
+        self.name = name
 
         #animation setup
         self.frame_index = 0
         self.frames_dict = frames_dict
 
         #movement setup
+        #self.direction = pygame.math.Vector2(-1,0)
         self.direction = pygame.math.Vector2(-1,0)
-        self.speed = 75
+        self.speed = ANIMAL_SPEED[self.name]
         self.run = True
         self.pos = pygame.math.Vector2(pos)
         self.timer = Timer(3000)
@@ -167,8 +170,6 @@ class Animal(Generic):
 
         #collision setup
         self.collision_sprites = collision_sprites
-        #self.rect = self.image.get_rect(center = pos)
-        #self.hitbox = self.rect.copy().inflate((-self.rect.width*0.6, -self.rect.height*0.3))
         self.rect = self.image.get_rect(bottomleft = pos)
         self.hitbox = self.rect.copy()
         
@@ -227,6 +228,7 @@ class Animal(Generic):
     def movement_update(self):
         if self.timer.active == False:
             if randint(0,10) < 5:
+            #if randint(0,10) < 0:
                 self.run = not self.run
                 self.frame_index = 0
                 if self.run  ==  True:
@@ -254,14 +256,26 @@ class Animal(Generic):
         self.animate(dt) 
 
 class Chicken(Animal):
-    def __init__(self, pos, frames_dict, groups, collision_sprites):
+    def __init__(self, pos, frames_dict, groups, collision_sprites, name):
         super().__init__(
             pos = pos, 
             frames_dict = frames_dict, 
             groups = groups,
-            collision_sprites = collision_sprites
+            collision_sprites = collision_sprites,
+            name = name
             )
         
-        #collision setup
-        #self.hitbox = self.rect.copy().inflate((-20, -self.rect.height*0.5))
+        
+class Cow(Animal):
+    def __init__(self, pos, frames_dict, groups, collision_sprites, name):
+        super().__init__(
+            pos = pos, 
+            frames_dict = frames_dict, 
+            groups = groups,
+            collision_sprites = collision_sprites,
+            name = name
+            )
+        self.hitbox = self.image.get_rect(topleft = pos).inflate((-20, -self.rect.height*0.6))
+
+        
 

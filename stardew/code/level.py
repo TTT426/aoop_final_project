@@ -2,7 +2,7 @@ import pygame, sys
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle, Chicken
+from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle, Chicken, Cow
 from pytmx.util_pygame import load_pygame
 from support import *
 from transition import Transition
@@ -124,16 +124,31 @@ class Level:
                 groups = self.collision_sprites
             )
 
-        #chikens
+        # #chikens
         chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
-        Chicken(
-            pos = (30*64, 30*64),
-            #frames = chiken_frames,
-            frames_dict = chiken_frames_dict,
-            #groups = [self.all_sprites],
-            groups = [self.all_sprites, self.animal_sprites],
-            collision_sprites = self.collision_sprites
-        )
+        for  pos in ANIMAL_POS['chicken']:
+            Chicken(
+                #pos = (30*64, 30*64),
+                pos = (pos[0]*TILE_SIZE, pos[1]*TILE_SIZE),
+                #frames = chiken_frames,
+                frames_dict = chiken_frames_dict,
+                #groups = [self.all_sprites],
+                groups = [self.all_sprites, self.animal_sprites],
+                collision_sprites = self.collision_sprites,
+                name = 'chicken'
+            )
+        
+        #cows
+        cow_frames_dict = import_folder_dict_resize('../graphics/animals/cow', 'cow')
+        for  pos in ANIMAL_POS['cow']:
+            Cow(
+                pos = (pos[0]*TILE_SIZE, pos[1]*TILE_SIZE),
+                frames_dict = cow_frames_dict,
+                groups = [self.all_sprites, self.animal_sprites],
+                collision_sprites = self.collision_sprites,
+                name = 'cow'
+            )
+
 
         #Player
         for obj in tmx_data.get_layer_by_name('Player'):

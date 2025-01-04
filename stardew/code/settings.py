@@ -58,3 +58,17 @@ PURCHASE_PRICES = {
     'plane_game': 20
 }
 
+ANIMAL_POS = {
+    'chicken': [(15, 23), (30, 30), (36, 28), (14, 14), (32,16), (31,19)],
+    'cow':[(27,29), (27,18)]
+}
+
+ANIMAL_SPEED = {
+    'chicken': 75,
+    'cow': 50
+}
+
+ANIMAL_IMAGES_RESIZE = {
+    'chicken': (64, 64),
+    'cow': (150, 150)
+}
