@@ -53,7 +53,9 @@ SALE_PRICES = {
     'corn': 10,
     'tomato': 20,
     'egg': 3,
-    'milk': 6
+    'milk': 6,
+    'chicken': 8,
+    'beef': 12
 }
 
 PURCHASE_PRICES = {
