@@ -124,8 +124,13 @@ class Menu:
             else : #buy
                 pos_x = self.main_rect.left + 200 if 'plane_game' in self.options[self.choose_index] else self.main_rect.left + 150
                 pos_rect = self.buy_text.get_rect(midleft=(pos_x, bg_rect.centery))
-                self.display_surface.blit(self.buy_text,pos_rect)      
 
+                if not 'plane_game' in self.options[self.choose_index]:
+                    self.buy_text = self.font.render('Buy(seed)', False, 'Black')
+                    self.display_surface.blit(self.buy_text,pos_rect)      
+                else:
+                    self.buy_text = self.font.render('Buy', False, 'Black')
+                    self.display_surface.blit(self.buy_text,pos_rect)   
     def update(self):
         self.input()
         self.display_money()
