@@ -17,6 +17,19 @@ NYCU Valley is a single player farming games. You can plant as many crops as you
 ## Report Link
 [ppt](https://www.canva.com/design/DAGbKZRHVXk/pSW3tnpWlCMot5XB4sFIYg/edit?utm_content=DAGbKZRHVXk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
-## how to run the game?
+## How to run the game?
+1.Clone the repository
+```
+bash
+git clone git@github.com:TTT426/aoop_final_project.git
+cd 'NYCU VALLEY'/code
+```
+
+2. Install dependencies:
+```
+bash
+pip install -r requirements.txt
+```
+##Control
 
 
