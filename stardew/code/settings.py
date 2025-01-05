@@ -3,6 +3,8 @@ from pygame.math import Vector2
 ## global variable
 unlock = False
 money = 39
+look_menu = False
+day_count = 1
 
 #screensize
 SCREEN_WIDTH = 1280

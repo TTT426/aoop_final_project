@@ -1,7 +1,7 @@
 import pygame, sys, settings, player
 from settings import *
 from level import Level
-from plane_game.plane import start_plane_game  # 引入 plane_game 的函數
+from plane_game.plane import start_plane_game  # 引入 plane_game
 
 class Game:
     def __init__(self):
@@ -31,18 +31,19 @@ class Game:
                 if event.key == pygame.K_p and settings.unlock:  # 按下 'P' 鍵
                     if settings.money < 20:
                         self.display_message("you don't have enough money to enter the game!")
-
                     else:
                         self.main_game_background = self.screen.copy()
                         self.state = "plane_game"  # 切換到子遊戲
-            
+                elif event.key == 109: # 按 M 會跳出menu
+                    self.level.shop_active = True
+                    settings.look_menu = True
+
         dt = self.clock.tick() / 1000.0 
         self.level.run(dt)
         pygame.display.update()
 
     def plane_game(self):
         result, coin_value = start_plane_game()  # 執行子遊戲
-        print(result, coin_value)
         if result == "Win":
             settings.money += coin_value-20
         elif result == "Lose":

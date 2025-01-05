@@ -171,6 +171,7 @@ class Player(pygame.sprite.Sprite):
                 if collided_interation_sprite:
                     if collided_interation_sprite[0].name == 'Trader':
                         self.toggle_shop()
+                        settings.look_menu = False
                     else:
                         self.status = 'left_idle'
                         self.sleep = True

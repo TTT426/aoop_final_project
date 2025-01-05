@@ -25,7 +25,7 @@ class Menu:
         #movement
         self.choose_index = 0
         self.timer = Timer(200)
-
+    
     def display_money(self):
         text_surf = self.font.render(f'${settings.money}', False, 'Black')
         text_rect = text_surf.get_rect(midbottom = (SCREEN_WIDTH/2, SCREEN_HEIGHT-20))
@@ -71,7 +71,7 @@ class Menu:
                 self.choose_index += 1
                 self.timer.activate()
 
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_SPACE] and not settings.look_menu:
                 self.timer.activate()
                 
                 #get item
@@ -116,7 +116,7 @@ class Menu:
         self.display_surface.blit(amount_surf, amount_rect)
 
         #selected
-        if selected == True:
+        if selected == True and not settings.look_menu:
             pygame.draw.rect(self.display_surface, 'Black', bg_rect, 4, 4)
             if self.choose_index <= self.sell_border: #sell
                 pos_rect = self.sell_text.get_rect(midleft = (self.main_rect.left + 150, bg_rect.centery))
@@ -130,7 +130,24 @@ class Menu:
                     self.display_surface.blit(self.buy_text,pos_rect)      
                 else:
                     self.buy_text = self.font.render('Buy', False, 'Black')
-                    self.display_surface.blit(self.buy_text,pos_rect)   
+                    self.display_surface.blit(self.buy_text,pos_rect) 
+                
+        elif selected == True and settings.look_menu:
+            pygame.draw.rect(self.display_surface, 'Blue', bg_rect, 4, 4)
+
+            self.buy_text = self.font.render('have(product)', False, 'Black')
+            if self.choose_index <= self.sell_border: #sell
+                pos_rect = self.sell_text.get_rect(midleft = (self.main_rect.left + 150, bg_rect.centery))
+                self.display_surface.blit(self.buy_text, pos_rect )
+            else : #buy
+                pos_x = self.main_rect.left + 200 if 'plane_game' in self.options[self.choose_index] else self.main_rect.left + 150
+                pos_rect = self.buy_text.get_rect(midleft=(pos_x, bg_rect.centery))
+                if not 'plane_game' in self.options[self.choose_index]:
+                    self.buy_text = self.font.render('have(seed)', False, 'Black')
+                    self.display_surface.blit(self.buy_text,pos_rect)      
+                else:
+                    self.buy_text = self.font.render('have', False, 'Black')
+                    self.display_surface.blit(self.buy_text,pos_rect)
     def update(self):
         self.input()
         self.display_money()
@@ -141,7 +158,7 @@ class Menu:
             amount = amount_list[text_index]
             item_is_choosed = text_index == self.choose_index
             self.show_entry(text_surf, amount, top, item_is_choosed)
-
+        
     def display_message(self, message):
         # 創建文字表面
         message_surf = self.font.render(message, True, 'Black')

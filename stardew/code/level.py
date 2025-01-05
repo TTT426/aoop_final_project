@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, settings
 from settings import *
 from player import Player
 from overlay import Overlay
@@ -51,7 +51,6 @@ class Level:
         #animal
         self.chiken_num = len(ANIMAL_POS['chicken'])
         self.cow_num = len(ANIMAL_POS['cow'])
-
 
     def setup(self):
         tmx_data = load_pygame('../data/map.tmx')
@@ -192,7 +191,6 @@ class Level:
         self.success.play()
 
     def toggle_shop(self):
-
         self.shop_active = not self.shop_active
 
     def reset(self):
