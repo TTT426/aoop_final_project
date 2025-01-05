@@ -144,7 +144,7 @@ class Tree(Generic):
                     ) 
 
 class Animal(Generic):
-    def __init__(self, pos, frames_dict, groups, collision_sprites, name):
+    def __init__(self, pos, frames_dict, groups, all_sprites,collision_sprites, meat_sprites,name, meat_surf):
 
         #general setup
         self.name = name
@@ -170,10 +170,20 @@ class Animal(Generic):
         )
 
         #collision setup
+        self.all_sprites = all_sprites
         self.collision_sprites = collision_sprites
+        self.meat_sprites = meat_sprites
         self.rect = self.image.get_rect(bottomleft = pos)
         self.hitbox = self.rect.copy()
-        
+
+        #health
+        if name == 'cow':
+            self.health = 7
+        else:
+            self.health = 3
+
+        self.meat_surf = meat_surf
+ 
     def move(self,dt):
         if self.run == True:
             if self.direction.length() > 0:
@@ -249,32 +259,62 @@ class Animal(Generic):
             self.frame_index = 0
         self.image = self.frames_dict[self.status][int(self.frame_index)]
 
+    def get_kill(self):
+        self.health -= 1
+        if self.health <= 0:
+            name = ''
+            if self.name == 'cow':
+                name = 'beef'
+            else :
+                name = 'chicken'
+            Meat(self.pos, self.meat_surf, [self.all_sprites, self.meat_sprites], name)
+            self.kill()
+
+    def breed(self, num):
+        if num >= 2:
+            if self.name == 'cow':
+                Cow(self.pos, self.frames_dict,self.groups(), self.all_sprites, self.collision_sprites, self.meat_sprites, self.name)
+            else:
+                Chicken(self.pos, self.frames_dict,self.groups(), self.all_sprites, self.collision_sprites, self.meat_sprites, self.name)
+
+
     def update(self, dt):
         self.movement_update()
         self.get_status()
         self.move(dt)
+
         self.timer.update()
         self.animate(dt) 
 
 
 class Chicken(Animal):
-    def __init__(self, pos, frames_dict, groups, collision_sprites, name):
+    def __init__(self, pos, frames_dict, groups, all_sprites,collision_sprites,meat_sprites,name):
+        meat_img = pygame.image.load('../graphics/animals/meat/chicken.png')
+        meat_surf = meat_img.convert_alpha()
+
+
         super().__init__(
             pos = pos, 
             frames_dict = frames_dict, 
             groups = groups,
+            all_sprites = all_sprites,
             collision_sprites = collision_sprites,
-            name = name
-        )
-
+            meat_sprites = meat_sprites,
+            name = name,
+            meat_surf = meat_surf
+            )
+        
+       
 class ChickenHouse(Generic):
-    def __init__(self, groups):
+    def __init__(self, groups, animal_sprites):
 
         img = pygame.image.load('../graphics/animals/chicken/house/house.png')
         resized_img = pygame.transform.scale(img, (img.get_width()*4, img.get_height()*4))
         
         self.surf = resized_img.convert_alpha()
         self.pos = (TILE_SIZE*30, TILE_SIZE*23)
+        
+        self.animal_sprites = animal_sprites
 
         super().__init__(
             pos = self.pos, 
@@ -287,14 +327,17 @@ class ChickenHouse(Generic):
         ChickenNest(groups, (32*TILE_SIZE, 26*TILE_SIZE))]
         self.timer = Timer(5000)
 
-        #num
-        self.chicken_num = len(ANIMAL_POS['chicken'])
+        
     
     def lay_egg(self):
         if self.timer.active == False:
             self.timer.activate()
+            chiken_num = 0
+            for animal in self.animal_sprites.sprites():
+                if animal.name == 'chicken':
+                    chiken_num += 1
             for chik_nest in self.nests:
-                if randint(0, 100) < self.chicken_num:
+                if randint(0, 100) < chiken_num:
                 #if randint(0, 100) < 100:
                     chik_nest.egg()
     
@@ -345,13 +388,20 @@ class ChickenNest(Generic):
 
         
 class Cow(Animal):
-    def __init__(self, pos, frames_dict, groups, collision_sprites, name):
+    def __init__(self, pos, frames_dict, groups, all_sprites,collision_sprites,meat_sprites,name):
+
+        meat_img = pygame.image.load('../graphics/animals/meat/beef.png')
+        resized_img = pygame.transform.scale(meat_img, (meat_img.get_width()*2, meat_img.get_height()*2))
+        meat_surf = resized_img.convert_alpha()
         super().__init__(
             pos = pos, 
             frames_dict = frames_dict, 
             groups = groups,
+            all_sprites = all_sprites,
             collision_sprites = collision_sprites,
-            name = name
+            meat_sprites = meat_sprites,
+            name = name,
+            meat_surf = meat_surf
             )
         self.hitbox = self.image.get_rect(topleft = pos).inflate((-20, -self.rect.height*0.6))
 
@@ -366,7 +416,7 @@ class Cow(Animal):
     def generate_milk(self, pos):
         milk_pos_offset = choice(self.milk_pos)
         milk_pos = (pos[0] + milk_pos_offset[0]*TILE_SIZE, pos[1] + milk_pos_offset[1]*TILE_SIZE)
-        self.milk_list.append(Milk(milk_pos, self.milk_surf, self.groups()))
+        self.milk_list.append(Milk(milk_pos, self.milk_surf, self.all_sprites))
     
     def update_milk(self):
         if self.has_milk == False:
@@ -384,4 +434,16 @@ class Milk(Generic):
             surf = surf, 
             groups = groups
         )
+
+class Meat(Generic):
+    def __init__(self, pos,surf,groups, name):
+        super().__init__(
+            pos = pos, 
+            surf = surf, 
+            groups = groups
+        )
+        self.name = name
+        
+    
+    
 

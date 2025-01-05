@@ -100,7 +100,7 @@ class SoilLayer:
         
         self.grid = [[[]for column in range(h_tiles)] for row in range(v_tiles)]
         for x, y, surf in load_pygame('../data/map.tmx').get_layer_by_name('Farmable').tiles():
-            #print(x, y)
+            AVAILABLE_POS.append((x,y))
             self.grid[y][x].append('F')
         for x,y in ANIMAL_POS['chicken_house']:
             self.grid[y][x].remove('F')
@@ -122,7 +122,7 @@ class SoilLayer:
 
                 x = rect.x // TILE_SIZE
                 y = rect.y // TILE_SIZE
-                print (x, y)
+                #print (x, y)
                 
                 if self.grid[y][x]:
                     self.grid[y][x].append('X')

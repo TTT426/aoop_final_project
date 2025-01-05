@@ -54,7 +54,9 @@ class Player(pygame.sprite.Sprite):
             'corn':20,
             'tomato':20,
             'egg':0,
-            'milk':0
+            'milk':0,
+            'chicken':0,
+            'beef':0
         }
         self.seed_inventory = {
             'corn':5, 
@@ -82,6 +84,9 @@ class Player(pygame.sprite.Sprite):
             for tree in self.tree_sprites.sprites():
                 if tree.rect.collidepoint(self.target_pos):
                     tree.damage()
+            for animal in self.animal_sprites.sprites():
+                if animal.rect.collidepoint(self.target_pos):
+                    animal.get_kill()
 
         if self.selected_tool == 'water':
             self.soil_layer.water(self.target_pos)

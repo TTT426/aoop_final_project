@@ -8,7 +8,7 @@ from support import *
 from transition import Transition
 from soil import SoilLayer
 from sky import Rain, Sky
-from random import randint
+from random import randint, choice
 from menu import Menu
 
 
@@ -24,6 +24,7 @@ class Level:
         self.animal_sprites = pygame.sprite.Group()
         self.tree_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
+        self.meat_sprites = pygame.sprite.Group()
 
         self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
         self.setup()
@@ -128,33 +129,37 @@ class Level:
             )
 
         # #chikens
-        chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
+        self.chiken_frames_dict = import_folder_dict_resize('../graphics/animals/chicken', 'chicken')
         for  pos in ANIMAL_POS['chicken']:
             Chicken(
                 #pos = (30*64, 30*64),
                 pos = (pos[0]*TILE_SIZE, pos[1]*TILE_SIZE),
                 #frames = chiken_frames,
-                frames_dict = chiken_frames_dict,
+                frames_dict = self.chiken_frames_dict,
                 #groups = [self.all_sprites],
                 groups = [self.all_sprites, self.animal_sprites],
+                all_sprites = self.all_sprites,
                 collision_sprites = self.collision_sprites,
+                meat_sprites = self.meat_sprites,
                 name = 'chicken'
             )
         
         #chicken house
-        self.chiken_house = ChickenHouse([self.all_sprites, self.collision_sprites])
+        self.chiken_house = ChickenHouse([self.all_sprites, self.collision_sprites], self.animal_sprites)
         #cows
-        cow_frames_dict = import_folder_dict_resize('../graphics/animals/cow', 'cow')
-        self.CowCluster = []
+        self.cow_frames_dict = import_folder_dict_resize('../graphics/animals/cow', 'cow')
+        #self.CowCluster = []
         for  pos in ANIMAL_POS['cow']:
-            c =Cow(
+            Cow(
                 pos = (pos[0]*TILE_SIZE, pos[1]*TILE_SIZE),
-                frames_dict = cow_frames_dict,
+                frames_dict = self.cow_frames_dict,
                 groups = [self.all_sprites, self.animal_sprites],
+                all_sprites = self.all_sprites,
                 collision_sprites = self.collision_sprites,
+                meat_sprites = self.meat_sprites,
                 name = 'cow'
             )
-            self.CowCluster.append(c)
+            #self.CowCluster.append(c)
         #print(self.CowCluster)
 
 
@@ -218,8 +223,10 @@ class Level:
         self.sky.start_color = [255,255,255]
 
         #animals
-        for cow in self.CowCluster:
-            cow.update_milk()
+        for animal in self.animal_sprites.sprites():
+            if animal.name == 'cow':
+                animal.update_milk()
+        self.breed_animal()
 
     def plant_collision(self):
         #harvesting plants
@@ -241,23 +248,82 @@ class Level:
                 nest.pick_egg()
                 #print(self.player.item_inventory)
 
+    def meat_collison(self):
+        #pick up meat
+        for meat in self.meat_sprites.sprites():
+            if meat.rect.colliderect(self.player.hitbox):
+                #self.player_add('meat')
+                self.player.item_inventory[meat.name] += 1
+                meat.kill()
+                #print(self.player.item_inventory)
+
     def milk_collison(self):
         #pick up milk
-        for cow in self.CowCluster:
-            for milk in cow.milk_list:
-                if milk.rect.colliderect(self.player.hitbox):
-                    self.player_add('milk')
-                    cow.milk_list.remove(milk)
-                    milk.kill()
-                    #print(self.player.item_inventory)
+        # for cow in self.CowCluster:
+        #     for milk in cow.milk_list:
+        #         if milk.rect.colliderect(self.player.hitbox):
+        #             self.player_add('milk')
+        #             cow.milk_list.remove(milk)
+        #             milk.kill()
+        #             #print(self.player.item_inventory)
+        for animal in self.animal_sprites.sprites():
+            if animal.name == 'cow':
+                for milk in animal.milk_list:
+                    if milk.rect.colliderect(self.player.hitbox):
+                        self.player_add('milk')
+                        animal.milk_list.remove(milk)
+                        milk.kill()
+                        #print(self.player.item_inventory
 
     def get_milk(self):
-        for cow in self.CowCluster:
-            if cow.has_milk and cow.rect.colliderect(self.player.hitbox):
-                #self.player_add('milk')
-                #print(self.player.item_inventory)
-                cow.generate_milk(self.player.rect.center)
-                cow.has_milk = False
+        # for cow in self.CowCluster:
+        #     if cow.has_milk and cow.rect.colliderect(self.player.hitbox):
+        #         #self.player_add('milk')
+        #         #print(self.player.item_inventory)
+        #         cow.generate_milk(self.player.rect.center)
+        #         cow.has_milk = False
+        for animal in self.animal_sprites.sprites():
+            if animal.name == 'cow':
+                if animal.has_milk and animal.rect.colliderect(self.player.hitbox):
+                    #self.player_add('milk')
+                    #print(self.player.item_inventory)
+                    animal.generate_milk(self.player.rect.center)
+                    animal.has_milk = False
+
+    def breed_animal(self):
+        chicken_num = 0
+        cow_num = 0
+        for animal in self.animal_sprites.sprites():
+            if animal.name == 'chicken':
+                chicken_num += 1
+            if animal.name == 'cow':
+                cow_num += 1
+        chicken_pos = choice(AVAILABLE_POS)
+        cow_pos = choice(AVAILABLE_POS)        
+        if chicken_num >= 2:
+            Chicken(
+                #pos = (30*64, 30*64),
+                pos = (chicken_pos[0]*TILE_SIZE, chicken_pos[1]*TILE_SIZE),
+                #frames = chiken_frames,
+                frames_dict = self.chiken_frames_dict,
+                #groups = [self.all_sprites],
+                groups = [self.all_sprites, self.animal_sprites],
+                all_sprites = self.all_sprites,
+                collision_sprites = self.collision_sprites,
+                meat_sprites = self.meat_sprites,
+                name = 'chicken'
+            )
+        if cow_num >= 2:
+            Cow(
+                pos = (cow_pos[0]*TILE_SIZE, cow_pos[1]*TILE_SIZE),
+                frames_dict = self.cow_frames_dict,
+                groups = [self.all_sprites, self.animal_sprites],
+                all_sprites = self.all_sprites,
+                collision_sprites = self.collision_sprites,
+                meat_sprites = self.meat_sprites,
+                name = 'cow'
+            )
+    
     def run(self, dt):
 
         #drawing logic
@@ -273,6 +339,7 @@ class Level:
             self.egg_collison()
             self.get_milk()
             self.milk_collison()
+            self.meat_collison()
 
         #weather
         self.overlay.display()
