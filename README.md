@@ -1,5 +1,5 @@
 # AOOP Final Project
-
+![image](https://github.com/TTT426/aoop_final_project/blob/main/reference/NYCU_Valley.png)
 ## 架構
 - 以NYCU VALLEY為主體 並將plane_game作為子遊戲附在裡面
 - 
