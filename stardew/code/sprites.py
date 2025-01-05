@@ -266,7 +266,82 @@ class Chicken(Animal):
             collision_sprites = collision_sprites,
             name = name
         )
+
+class ChickenHouse(Generic):
+    def __init__(self, groups):
+
+        img = pygame.image.load('../graphics/animals/chicken/house/house.png')
+        resized_img = pygame.transform.scale(img, (img.get_width()*4, img.get_height()*4))
         
+        self.surf = resized_img.convert_alpha()
+        self.pos = (TILE_SIZE*30, TILE_SIZE*23)
+
+        super().__init__(
+            pos = self.pos, 
+            surf = self.surf, 
+            groups = groups
+        )      
+        #nest
+        self.nests = [ChickenNest(groups, (30*TILE_SIZE, 26*TILE_SIZE)),
+        ChickenNest(groups, (31*TILE_SIZE, 26*TILE_SIZE)),
+        ChickenNest(groups, (32*TILE_SIZE, 26*TILE_SIZE))]
+        self.timer = Timer(5000)
+
+        #num
+        self.chicken_num = len(ANIMAL_POS['chicken'])
+    
+    def lay_egg(self):
+        if self.timer.active == False:
+            self.timer.activate()
+            for chik_nest in self.nests:
+                if randint(0, 100) < self.chicken_num:
+                #if randint(0, 100) < 100:
+                    chik_nest.egg()
+    def update(self, dt):
+        self.lay_egg()
+        self.timer.update()
+    
+
+class ChickenNest(Generic):
+    def __init__(self, groups, pos):
+
+        egg_img = pygame.image.load('../graphics/animals/chicken/nest/0.png')
+        resized_img = pygame.transform.scale(egg_img, (egg_img.get_width()*4, egg_img.get_height()*4))
+        egg_surf = resized_img.convert_alpha()
+        empty_img = pygame.image.load('../graphics/animals/chicken/nest/1.png')
+        resized_img = pygame.transform.scale(empty_img, (empty_img.get_width()*4, empty_img.get_height()*4))
+        empty_surf = resized_img.convert_alpha()
+
+        #self.hitbox = resized_img.get_rect(topleft = pos).inflate((-20, -resized_img.get_height()*0.6))
+
+        self.frames = [empty_surf, egg_surf]
+        self.frame_index = 0
+        self.pos = pos
+
+        #egg
+        self.has_egg = False
+
+
+
+        super().__init__(
+            pos = self.pos, 
+            surf = self.frames[self.frame_index], 
+            groups = groups
+        ) 
+
+    def egg(self):
+        if self.frame_index == 0:
+            self.frame_index = 1
+            self.has_egg = True
+            self.image = self.frames[self.frame_index]
+    
+    def pick_egg(self):
+        if self.frame_index == 1:
+            self.frame_index = 0
+            self.has_egg = False
+            self.image = self.frames[self.frame_index]
+        
+
         
 class Cow(Animal):
     def __init__(self, pos, frames_dict, groups, collision_sprites, name):

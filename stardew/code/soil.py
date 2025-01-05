@@ -102,6 +102,8 @@ class SoilLayer:
         for x, y, surf in load_pygame('../data/map.tmx').get_layer_by_name('Farmable').tiles():
             #print(x, y)
             self.grid[y][x].append('F')
+        for x,y in ANIMAL_POS['chicken_house']:
+            self.grid[y][x].remove('F')
 
     def create_hit_rects(self):
         self.hit_rects = []
@@ -120,6 +122,7 @@ class SoilLayer:
 
                 x = rect.x // TILE_SIZE
                 y = rect.y // TILE_SIZE
+                print (x, y)
                 
                 if self.grid[y][x]:
                     self.grid[y][x].append('X')
@@ -229,14 +232,14 @@ class SoilLayer:
                         surf = self.soil_surfs[tile_type], 
                         groups=[self.all_sprites, self.soil_sprites]) 
 
-    def animal_production(self, num):
-        if self.timer.active == False:
-            self.timer.activate()
-            for index_row, row in enumerate(self.grid):
-                for index_col, cell in enumerate(row):
-                    if 'F' in cell:
-                        if randint(0,200) < num:
-                            self.grid[index_row][index_col].remove('F')
-                            Egg([self.all_sprites, self.egg_sprites ], (index_col*TILE_SIZE+32, index_row*TILE_SIZE+32))
+    # def animal_production(self, num):
+    #     if self.timer.active == False:
+    #         self.timer.activate()
+    #         for index_row, row in enumerate(self.grid):
+    #             for index_col, cell in enumerate(row):
+    #                 if 'F' in cell:
+    #                     if randint(0,200) < num:
+    #                         self.grid[index_row][index_col].remove('F')
+    #                         Egg([self.all_sprites, self.egg_sprites ], (index_col*TILE_SIZE+32, index_row*TILE_SIZE+32))
                     
 

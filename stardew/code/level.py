@@ -2,7 +2,7 @@ import pygame, sys
 from settings import *
 from player import Player
 from overlay import Overlay
-from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle, Chicken, Cow
+from sprites import Generic, Water, WildFlower, Tree, Interaction, Particle, Chicken, Cow, ChickenHouse
 from pytmx.util_pygame import load_pygame
 from support import *
 from transition import Transition
@@ -142,6 +142,8 @@ class Level:
                 name = 'chicken'
             )
         
+        #chicken house
+        self.chiken_house = ChickenHouse([self.all_sprites, self.collision_sprites])
         #cows
         cow_frames_dict = import_folder_dict_resize('../graphics/animals/cow', 'cow')
         for  pos in ANIMAL_POS['cow']:
@@ -226,6 +228,13 @@ class Level:
                     y = plant.rect.centery // TILE_SIZE
                     self.soil_layer.grid[y][x].remove('P')
 
+    def egg_collison(self):
+        #pick up eggs
+        for nest in self.chiken_house.nests:
+            if nest.has_egg and nest.rect.colliderect(self.player.hitbox):
+                self.player_add('egg')
+                nest.pick_egg()
+                #print(self.player.item_inventory)
     def run(self, dt):
 
         #drawing logic
@@ -238,9 +247,10 @@ class Level:
         else:
             self.all_sprites.update(dt)
             self.plant_collision()
-            #animal production
-            self.soil_layer.animal_production(self.chiken_num)
-            self.soil_layer.timer.update()
+            self.egg_collison()
+            # #animal production
+            # self.soil_layer.animal_production(self.chiken_num)
+            # self.soil_layer.timer.update()
 
         #weather
         self.overlay.display()

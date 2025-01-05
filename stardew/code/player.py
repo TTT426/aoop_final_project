@@ -52,7 +52,8 @@ class Player(pygame.sprite.Sprite):
             'wood':20,
             'apple':20,
             'corn':20,
-            'tomato':20
+            'tomato':20,
+            'egg':0
         }
         self.seed_inventory = {
             'corn':5, 
@@ -253,4 +254,5 @@ class Player(pygame.sprite.Sprite):
 
         self.move(dt)
         self.animate(dt)
+
         
