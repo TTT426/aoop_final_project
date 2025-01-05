@@ -47,6 +47,12 @@ pip install -r requirements.txt
 
 ### Plane :
 
+## What you can do?
+- plant the crops
+- collect animal products
+- trade
+- play Plane
+
 
 
 
