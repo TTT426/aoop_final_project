@@ -22,3 +22,13 @@ sound:
     -ghost_win : https://opengameart.org/content/ghostly-cackle-laugh-1
     License(s) : CC0
 stardew:
+
+img: 
+    -sprout land asset pack : https://cupnooble.itch.io/sprout-lands-asset-pack
+    @author : CUP NOOBLE
+
+    -meat : https://spiderbr0.itch.io/32x-pixel-raw-meat
+
+code turial:
+
+https://youtu.be/T4IX36sP_0c?si=eKmcVJf9XrMs0SSC
