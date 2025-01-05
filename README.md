@@ -1,5 +1,8 @@
 # AOOP Final Project
 ![image](https://github.com/TTT426/aoop_final_project/blob/main/reference/NYCU_Valley.png)
+
+NYCU Valley is a single player farming games. You can plant as many crops as you like and enjoy the cute animals accompany in your NYCU Valley. Try to build a wonderful farm and sell your product.
+
 ## 架構
 - 以NYCU VALLEY為主體 並將plane_game作為子遊戲附在裡面
 - 
