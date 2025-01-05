@@ -146,14 +146,17 @@ class Level:
         self.chiken_house = ChickenHouse([self.all_sprites, self.collision_sprites])
         #cows
         cow_frames_dict = import_folder_dict_resize('../graphics/animals/cow', 'cow')
+        self.CowCluster = []
         for  pos in ANIMAL_POS['cow']:
-            Cow(
+            c =Cow(
                 pos = (pos[0]*TILE_SIZE, pos[1]*TILE_SIZE),
                 frames_dict = cow_frames_dict,
                 groups = [self.all_sprites, self.animal_sprites],
                 collision_sprites = self.collision_sprites,
                 name = 'cow'
             )
+            self.CowCluster.append(c)
+        #print(self.CowCluster)
 
 
         #Player
@@ -216,6 +219,10 @@ class Level:
         #sky
         self.sky.start_color = [255,255,255]
 
+        #animals
+        for cow in self.CowCluster:
+            cow.update_milk()
+
     def plant_collision(self):
         #harvesting plants
         if self.soil_layer.plant_sprites:
@@ -235,6 +242,24 @@ class Level:
                 self.player_add('egg')
                 nest.pick_egg()
                 #print(self.player.item_inventory)
+
+    def milk_collison(self):
+        #pick up milk
+        for cow in self.CowCluster:
+            for milk in cow.milk_list:
+                if milk.rect.colliderect(self.player.hitbox):
+                    self.player_add('milk')
+                    cow.milk_list.remove(milk)
+                    milk.kill()
+                    #print(self.player.item_inventory)
+
+    def get_milk(self):
+        for cow in self.CowCluster:
+            if cow.has_milk and cow.rect.colliderect(self.player.hitbox):
+                #self.player_add('milk')
+                #print(self.player.item_inventory)
+                cow.generate_milk(self.player.rect.center)
+                cow.has_milk = False
     def run(self, dt):
 
         #drawing logic
@@ -248,9 +273,8 @@ class Level:
             self.all_sprites.update(dt)
             self.plant_collision()
             self.egg_collison()
-            # #animal production
-            # self.soil_layer.animal_production(self.chiken_num)
-            # self.soil_layer.timer.update()
+            self.get_milk()
+            self.milk_collison()
 
         #weather
         self.overlay.display()
