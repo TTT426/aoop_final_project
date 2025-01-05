@@ -297,6 +297,7 @@ class ChickenHouse(Generic):
                 if randint(0, 100) < self.chicken_num:
                 #if randint(0, 100) < 100:
                     chik_nest.egg()
+    
     def update(self, dt):
         self.lay_egg()
         self.timer.update()
@@ -354,5 +355,33 @@ class Cow(Animal):
             )
         self.hitbox = self.image.get_rect(topleft = pos).inflate((-20, -self.rect.height*0.6))
 
+        #milk
+        milk_img = pygame.image.load('../graphics/animals/cow/milk/milk.png')
+        resized_img = pygame.transform.scale(milk_img, (milk_img.get_width()*2, milk_img.get_height()*2))
+        self.milk_surf = resized_img.convert_alpha()
+        self.has_milk= False
+        self.milk_pos = [(-1,-1), (-1,0), (-1,1), (0, -1), (0,1), (1,-1), (1,0), (1,1)]
+        self.milk_list = []
+    
+    def generate_milk(self, pos):
+        milk_pos_offset = choice(self.milk_pos)
+        milk_pos = (pos[0] + milk_pos_offset[0]*TILE_SIZE, pos[1] + milk_pos_offset[1]*TILE_SIZE)
+        self.milk_list.append(Milk(milk_pos, self.milk_surf, self.groups()))
+    
+    def update_milk(self):
+        if self.has_milk == False:
+            if randint(0, 50) < 100:
+                self.has_milk = True
+
+    # def update(self, dt):
+    #     self.generate_milk()
         
+
+class Milk(Generic):
+    def __init__(self, pos,surf,groups):
+        super().__init__(
+            pos = pos, 
+            surf = surf, 
+            groups = groups
+        )
 
