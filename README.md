@@ -43,6 +43,7 @@ pip install -r requirements.txt
 
 - use tool : press 'space'
 - use seed : press 'left ctrl'
+- go to bed : press 'enter'
 
 ### Plane :
 
