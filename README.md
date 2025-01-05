@@ -31,7 +31,7 @@ bash
 pip install -r requirements.txt
 ```
 ## Control
-# NYCU Valley:
+### NYCU Valley:
 
 - move : arrow key
 - open player backback : press 'm'
@@ -43,6 +43,8 @@ pip install -r requirements.txt
 
 - use tool : press 'space'
 - use seed : press 'left ctrl'
+
+### Plane :
 
 
 
