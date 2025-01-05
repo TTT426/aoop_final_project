@@ -33,15 +33,15 @@ pip install -r requirements.txt
 ## Control
 # NYCU Valley:
 
--move : arrow key
--open player backback : press 'm'
--switch item: arrow key
+- move : arrow key
+- open player backback : press 'm'
+- switch item: arrow key
 
--switch tool : press 'q'
--switch seed : press 'e'
+- switch tool : press 'q'
+- switch seed : press 'e'
 
--use tool : press 'space'
--use seed : press 'left ctrl'
+- use tool : press 'space'
+- use seed : press 'left ctrl'
 
 
 
