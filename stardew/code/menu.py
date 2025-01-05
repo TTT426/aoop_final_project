@@ -50,7 +50,7 @@ class Menu:
 
         #buy/sell text surface
         self.buy_text = self.font.render('Buy', False, 'Black')
-        self.sell_text = self.font.render('Sell', False, 'Black')
+        self.sell_text = self.font.render('Sell(product)', False, 'Black')
 
     def input(self):
 

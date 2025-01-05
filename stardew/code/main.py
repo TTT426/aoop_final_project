@@ -12,6 +12,8 @@ class Game:
         self.level = Level()
         self.state = "main_game"  # 當前狀態：main_game 或 plane_game
         self.main_game_background = None  # 保存主遊戲的背景畫面
+        self.font = pygame.font.Font('../font/LycheeSoda.ttf', 30)
+        self.display_surface = pygame.display.get_surface()
 
     def run(self):
         while True:
@@ -27,8 +29,8 @@ class Game:
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p and settings.unlock:  # 按下 'P' 鍵
-                    if settings.money <= 20:
-                        self.display_message("you don't have enough money!")
+                    if settings.money < 20:
+                        self.display_message("you don't have enough money to enter the game!")
 
                     else:
                         self.main_game_background = self.screen.copy()
@@ -60,7 +62,7 @@ class Game:
 
         # 更新顯示
         pygame.display.flip()
-        pygame.time.delay(2000)  # 停留 1.5 秒
+        pygame.time.delay(1500)  # 停留 1.5 秒
 if __name__ == '__main__':
     game = Game()
     game.run()

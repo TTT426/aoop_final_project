@@ -2,7 +2,7 @@ from pygame.math import Vector2
 
 ## global variable
 unlock = False
-money = 200
+money = 39
 
 #screensize
 SCREEN_WIDTH = 1280
