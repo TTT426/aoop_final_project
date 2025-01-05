@@ -35,7 +35,8 @@ pip install -r requirements.txt
 
 - move : arrow key
 - open player backback : press 'm'
-- switch item: arrow key
+- switch item : arrow key
+- chosse item : press 'space'
 
 - switch tool : press 'q'
 - switch seed : press 'e'
