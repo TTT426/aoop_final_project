@@ -388,7 +388,7 @@ class ChickenNest(Generic):
 
         
 class Cow(Animal):
-    def __init__(self, pos, frames_dict, groups, all_sprites,collision_sprites,meat_sprites,name):
+    def __init__(self, pos, frames_dict, groups, all_sprites,collision_sprites,meat_sprites,milk_sprites,name):
 
         meat_img = pygame.image.load('../graphics/animals/meat/beef.png')
         resized_img = pygame.transform.scale(meat_img, (meat_img.get_width()*2, meat_img.get_height()*2))
@@ -411,12 +411,14 @@ class Cow(Animal):
         self.milk_surf = resized_img.convert_alpha()
         self.has_milk= False
         self.milk_pos = [(-1,-1), (-1,0), (-1,1), (0, -1), (0,1), (1,-1), (1,0), (1,1)]
-        self.milk_list = []
+        #self.milk_list = []
+        self.milk_sprites = milk_sprites
     
     def generate_milk(self, pos):
         milk_pos_offset = choice(self.milk_pos)
         milk_pos = (pos[0] + milk_pos_offset[0]*TILE_SIZE, pos[1] + milk_pos_offset[1]*TILE_SIZE)
-        self.milk_list.append(Milk(milk_pos, self.milk_surf, self.all_sprites))
+        #self.milk_list.append(Milk(milk_pos, self.milk_surf, self.all_sprites))
+        Milk(milk_pos, self.milk_surf, [self.all_sprites, self.milk_sprites])
     
     def update_milk(self):
         if self.has_milk == False:

@@ -260,8 +260,8 @@ def start_plane_game():
 
             if Master2.health <= 0:
                 pygame.mixer.music.load(resource_manager.get_music("ghost_win"))
-                pygame.mixer.music.play(loops=2)
-                pygame.mixer.music.set_volume(1)
+                pygame.mixer.music.play(loops=1)
+                pygame.mixer.music.set_volume(0.8)
                 while True:
                     # 顯示暫停文字
                     lose_text = font.render("You are destoryed!", True, WHITE)

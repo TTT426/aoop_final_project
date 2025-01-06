@@ -25,6 +25,7 @@ class Level:
         self.tree_sprites = pygame.sprite.Group()
         self.interaction_sprites = pygame.sprite.Group()
         self.meat_sprites = pygame.sprite.Group()
+        self.milk_sprites = pygame.sprite.Group()
 
         self.soil_layer = SoilLayer(self.all_sprites, self.collision_sprites)
         self.setup()
@@ -157,6 +158,7 @@ class Level:
                 all_sprites = self.all_sprites,
                 collision_sprites = self.collision_sprites,
                 meat_sprites = self.meat_sprites,
+                milk_sprites=self.milk_sprites,
                 name = 'cow'
             )
             #self.CowCluster.append(c)
@@ -267,14 +269,19 @@ class Level:
         #             cow.milk_list.remove(milk)
         #             milk.kill()
         #             #print(self.player.item_inventory)
-        for animal in self.animal_sprites.sprites():
-            if animal.name == 'cow':
-                for milk in animal.milk_list:
-                    if milk.rect.colliderect(self.player.hitbox):
+        # for animal in self.animal_sprites.sprites():
+        #     if animal.name == 'cow':
+        #         for milk in animal.milk_list:
+        #             if milk.rect.colliderect(self.player.hitbox):
+        #                 self.player_add('milk')
+        #                 animal.milk_list.remove(milk)
+        #                 milk.kill()
+        #                 #print(self.player.item_inventory
+        for milk in self.milk_sprites.sprites():
+            if milk.rect.colliderect(self.player.hitbox):
                         self.player_add('milk')
-                        animal.milk_list.remove(milk)
                         milk.kill()
-                        #print(self.player.item_inventory
+
 
     def get_milk(self):
         # for cow in self.CowCluster:
@@ -322,6 +329,7 @@ class Level:
                 all_sprites = self.all_sprites,
                 collision_sprites = self.collision_sprites,
                 meat_sprites = self.meat_sprites,
+                milk_sprites = self.milk_sprites,
                 name = 'cow'
             )
     
