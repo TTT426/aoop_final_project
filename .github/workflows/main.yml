@@ -8,7 +8,7 @@ on:
 jobs:
   test-main:
     runs-on: ubuntu-latest
-    
+
     steps:
       # 1. 檢出儲存庫原始碼
       - name: Checkout repository
@@ -36,5 +36,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb
           
-          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" \
-            python NYCU VALLEY/code/main.py
+          # 切換到 NYCU VALLEY/code 目錄
+          cd "NYCU VALLEY/code"
+          
+          # 設定 SDL_AUDIODRIVER 以避免音效相關錯誤
+          export SDL_AUDIODRIVER=dummy
+          
+          # 使用 xvfb-run 執行 main.py
+          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" python main.py
