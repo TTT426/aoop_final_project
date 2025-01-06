@@ -20,7 +20,7 @@ class Game:
         start_time = time.time()
         while True:
             current_time = time.time()
-            if current_time - start_time > 10:  # 10 秒後自動退出
+            if current_time - start_time > 3:  # 10 秒後自動退出
                 pygame.quit()
                 sys.exit()
             if self.state == "main_game":
