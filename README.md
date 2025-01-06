@@ -1,35 +1,62 @@
 # AOOP Final Project
+![image](https://github.com/TTT426/aoop_final_project/blob/main/reference/NYCU_Valley.png)
+
+NYCU Valley is a single player farming games. You can plant as many crops as you like and enjoy the cute animals accompany in your NYCU Valley. Try to build a wonderful farm and sell your product.
+
+## 架構
+- 以NYCU VALLEY為主體 並將plane_game作為子遊戲附在裡面
+- 
 ## Class Diagram
 ### Plane Game
-
+🛠️
 ![img](reference/class_diagram1.png)
 
 [See more details here](https://lucid.app/lucidchart/92c029b0-b6c8-464c-aa2a-790c3bee1c45/edit?viewport_loc=-1664%2C-1778%2C3074%2C1660%2C0_0&invitationId=inv_135f1ff5-3c28-4422-b8c8-b278b6b06117)
+### NYCU VALLEY
 
 ## Report Link
 [ppt](https://www.canva.com/design/DAGbKZRHVXk/pSW3tnpWlCMot5XB4sFIYg/edit?utm_content=DAGbKZRHVXk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
-## 檔案說明:
-test:
-由於stardew(main game) 尚在開發 所以先複製stardew的半成品的code
-並利用半成品的code 做plane_game 和 stardew（半成品）的對接
-等到stardew全部完成時 能夠快速地完成對接（減少之後需要對接的時間）
 
-## 更新:
-gitactions錯誤很正常 因為test的RPG遊戲是半成品 有些東西沒抓到十分合理
-1. plane_game 的大致架構
-2. stardew 的大致架構
-3. 以stardew為遊戲主體 可以和plane_game做切換
+## How to run the game?
+1.Clone the repository
+```
+bash
+git clone git@github.com:TTT426/aoop_final_project.git
+cd 'NYCU VALLEY'/code
+```
 
-## stardew running
-run main.py in stardew/code
-## 待完成
-plane_game:
-1. 技能
+2. Install dependencies:
+```
+bash
+pip install -r requirements.txt
+```
+## Control
+### NYCU Valley:
 
-## Bug :
-1. stardew moving when cutting trees
-2. stardew not watering when the plant grows in the raining day
-## 專案架構 （暫定）
-- 以stardew為主體 並將plane_game作為子遊戲附在stardew裡面
+- move : arrow key
+- open player backback : press 'm'
+- switch item : arrow key
+- chosse item : press 'space'
 
-## 想法：
+- switch tool : press 'q'
+- switch seed : press 'e'
+
+- use tool : press 'space'
+- use seed : press 'left ctrl'
+- go to bed : press 'enter'
+
+### Plane :
+
+## What you can do?
+- plant the crops
+- collect animal products
+- trade
+- play Plane
+
+
+
+
+
+
+
+
