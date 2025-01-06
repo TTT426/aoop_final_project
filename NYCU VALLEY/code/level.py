@@ -215,9 +215,10 @@ class Level:
 
         #apples on the trees
         for tree in self.tree_sprites.sprites():
-            for apple in tree.apple_sprites.sprites():
-                apple.kill()
-            tree.create_fruit()
+            if tree.health > 0:
+                for apple in tree.apple_sprites.sprites():
+                    apple.kill()
+                tree.create_fruit()
 
         #sky
         self.sky.start_color = [255,255,255]
