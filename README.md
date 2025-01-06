@@ -1,6 +1,6 @@
 # AOOP Final Project
-## fixed bug
-milk bug can't pick already fixed
+## milk bug can't pick already fixed (because of class defination)
+
 ![image](https://github.com/TTT426/aoop_final_project/blob/main/reference/NYCU_Valley.png)
 
 NYCU Valley is a single player farming games. You can plant as many crops as you like and enjoy the cute animals accompany in your NYCU Valley. Try to build a wonderful farm and sell your product.
