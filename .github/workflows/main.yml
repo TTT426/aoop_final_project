@@ -1,4 +1,4 @@
-name: Run NYCU VALLEY/code/main.py
+name: Run NYCU VALLEY/code/zfortestmain.py
 
 on:
   push:
@@ -30,17 +30,19 @@ jobs:
       - name: List all files
         run: ls -R
 
-      # 5. 安裝 xvfb 並執行 main.py
-      - name: Run main.py in virtual display
+      # 5. 安裝 xvfb 並執行 zfortestmain.py
+      - name: Run zfortestmain.py in virtual display
         run: |
           sudo apt-get update
           sudo apt-get install -y xvfb
           
-          # 切換到 NYCU VALLEY/code 目錄
+          # 切換到 NYCU VALLEY/code 目錄 (確保路徑正確，如果有空格須用引號)
           cd "NYCU VALLEY/code"
           
-          # 設定 SDL_AUDIODRIVER 以避免音效相關錯誤
+          # 設定 SDL_AUDIODRIVER / SDL_VIDEODRIVER
           export SDL_AUDIODRIVER=dummy
+          export SDL_VIDEODRIVER=dummy
           
-          # 使用 xvfb-run 執行 main.py
-          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" python main.py
+          # 使用 xvfb-run 執行 zfortestmain.py
+          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" \
+            python zfortestmain.py
