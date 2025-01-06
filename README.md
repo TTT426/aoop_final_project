@@ -21,17 +21,19 @@ The points earned from this plane game can be converted into NYCU VALLEY coins. 
 [ppt](https://www.canva.com/design/DAGbKZRHVXk/pSW3tnpWlCMot5XB4sFIYg/edit?utm_content=DAGbKZRHVXk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ## How to run the game?
-1.Clone the repository
+1.Clone the repository and Install dependencies:
 ```
 bash
 git clone git@github.com:TTT426/aoop_final_project.git
-cd 'NYCU VALLEY'/code
+cd aoop_final_project
+pip install -r requirements.txt
 ```
 
-2. Install dependencies:
+2. run the game
 ```
 bash
-pip install -r requirements.txt
+cd 'NYCU VALLEY'/code
+python3 main.py
 ```
 ## Control
 ### NYCU Valley:
