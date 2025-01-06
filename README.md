@@ -3,9 +3,12 @@
 
 NYCU Valley is a single player farming games. You can plant as many crops as you like and enjoy the cute animals accompany in your NYCU Valley. Try to build a wonderful farm and sell your product.
 
+Included mini games:
+![image](https://github.com/TTT426/aoop_final_project/blob/main/reference/panegame.png)
+
+The points earned from this plane game can be converted into NYCU VALLEY coins. However, if the player's health reaches zero, the rewards will be halved. It is a high-risk, high-reward game.
 ## 架構
 - 以NYCU VALLEY為主體 並將plane_game作為子遊戲附在裡面
-- 
 ## Class Diagram
 ### Plane Game
 🛠️
@@ -47,6 +50,11 @@ pip install -r requirements.txt
 
 ### Plane :
 
+- move : arrow key
+- fire bullets : press 'space'
+- leave the game : press 'ESC'
+- pause the game : press 'P'
+  
 ## What you can do?
 - plant the crops
 - collect animal products
