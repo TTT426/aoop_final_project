@@ -1,39 +1,40 @@
-name: Run stardew/code/main.py
+name: Run NYCU VALLEY/code/main.py
 
 on:
   push:
     branches:
-      - main # 推送到 main 分支時自動觸發
+      - main
 
 jobs:
   test-main:
     runs-on: ubuntu-latest
-    timeout-minutes: 3  # 限制 test-main 的執行時間
+    
     steps:
-      # 檢出儲存庫
+      # 1. 檢出儲存庫原始碼
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 設置 Python 環境
+      # 2. 設定 Python 環境
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: 3.9
 
-      # 安裝依賴項
+      # 3. 安裝依賴
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # check all files
+      # 4. 列出所有檔案 (Debug 用，確認路徑是否正確)
       - name: List all files
-        run: |
-          ls -R
+        run: ls -R
 
-      # 執行 main.py
-      - name: Run main.py with dummy audio
+      # 5. 安裝 xvfb 並執行 main.py
+      - name: Run main.py in virtual display
         run: |
-          export SDL_AUDIODRIVER=dummy
-          cd stardew/code
-          python main.py
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          
+          xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" \
+            python NYCU VALLEY/code/main.py
