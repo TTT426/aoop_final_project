@@ -16,7 +16,9 @@ The points earned from this plane game can be converted into NYCU VALLEY coins. 
 🛠️
 ![img](reference/class_diagram1.png)
 
-[See more details here](https://lucid.app/lucidchart/92c029b0-b6c8-464c-aa2a-790c3bee1c45/edit?viewport_loc=-1664%2C-1778%2C3074%2C1660%2C0_0&invitationId=inv_135f1ff5-3c28-4422-b8c8-b278b6b06117)
+[See more details here : NYCU VALLEY](https://reurl.cc/RLQOlx)
+[See more details here : Plane game](https://reurl.cc/G5lX2A)
+
 ### NYCU VALLEY
 
 ## Report Link
