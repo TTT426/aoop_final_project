@@ -12,9 +12,10 @@ The points earned from this plane game can be converted into NYCU VALLEY coins. 
 ## 架構
 - 以NYCU VALLEY為主體 並將plane_game作為子遊戲附在裡面
 ## Class Diagram
-### Plane Game
-🛠️
+### NYCU VALLEY
 ![img](reference/class_diagram1.png)
+### Plane Game
+![img](reference/class_diagram2.png)
 
 See more details:
 [NYCU VALLEY](https://reurl.cc/RLQOlx)
