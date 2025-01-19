@@ -25,6 +25,7 @@ See more details:
 
 ## Report Link
 [ppt](https://www.canva.com/design/DAGbKZRHVXk/pSW3tnpWlCMot5XB4sFIYg/edit?utm_content=DAGbKZRHVXk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+[書面報告](https://docs.google.com/document/d/1P3BIOpRclh5zeHj_2oh5pYhnbBzXwa-2ABkUN23zlgs/edit?tab=t.0)
 
 ## How to run the game?
 1.Clone the repository and Install dependencies:
